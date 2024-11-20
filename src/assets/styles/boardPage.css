@@ -1,33 +1,44 @@
 @import './basic.css';
 
-.navbar {
-    display: flex;
-    justify-content: flex-start;
-    background-color: var(--theme-color-1);
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    height: 50px;
-    width: 100%;
+:root {
+    --sidebar-width: 200px;
 }
 
-.menu-item {
-    button {
+/* 좌측 카테고리 메뉴 */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--theme-color-1);
+    position: fixed;
+    top: 60px; /* 상단 메뉴 아래에 위치 */
+    bottom: 0;
+    left: 0px;
+
+    .sidebar_header{
+        padding-top: 20px;
         background-color: var(--theme-color-1);
-        border: 1px solid #cccccc00;
-        height: 100%;
-        width: 100px;
-        padding: 10px;
-        color: var(--text-color-2)
-    }    
-    button:hover {
-        background-color: var(--theme-color-2);
+        height: 100px;
+        font-size: large;
+    }
+
+    .sidebar-item {
+        button {
+            background-color: var(--theme-color-1);
+            border: 1px solid #cccccc00;
+            height: 100%;
+            width: 100%;
+            padding: 10px;
+            color: var(--text-color-2)
+        }    
+        button:hover {
+            background-color: var(--theme-color-2);
+        }
     }
 }
 
 .board {
-    margin: auto;
+    margin-left: var(--sidebar-width);
 }
+
 .board_header {
     display: flex;
     height: 70px;

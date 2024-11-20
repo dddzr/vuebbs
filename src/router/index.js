@@ -1,17 +1,28 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import MainPage from '@/views/MainPage.vue'
-import DetailPost from '@/views/DetailPost.vue'
+import BoardPage from '@/views/BoardPage.vue'
+import PostDetailPage from '@/views/PostDetailPage.vue'
+import LoginPage from '@/views/LoginPage.vue'
 
 const routes = [
   {
-    path: '/',
-    name: 'MainPage',
-    component: MainPage,
+    path: '/login',
+    name: 'LoginPage',
+    component: LoginPage,
   },
   {
-    path: '/detail',
-    name: 'DetailPost',
-    component: DetailPost,
+    path: '/',
+    name: 'BoardPage',
+    component: BoardPage,
+  },
+  {
+    path: '/post',
+    name: 'PostDetailPage',
+    component: PostDetailPage,
+    props: route => ({
+      id: route.params.id,
+      mode: route.query.mode,
+      post: JSON.parse(route.query.post || "{}"),
+    }),
   },
 ]
 
