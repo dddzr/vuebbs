@@ -11,9 +11,9 @@
       <h1 v-if="mode === 'create'">게시글 작성</h1>
     </div>    
 
-    <div class="post_info">
+    <div class="post-info">
       <form @submit.prevent="handleSubmit">
-        <div class="post_info_line">
+        <div class="post-info-line">
           <label for="category">카테고리</label>
           <input
             id="category"
@@ -22,7 +22,7 @@
             :disabled="mode === 'detail'"
           />
         </div>
-        <div class="post_info_line">
+        <div class="post-info-line">
           <label for="title">제목</label>
           <input
             id="title"
@@ -31,7 +31,7 @@
             :disabled="mode === 'detail'"
           />
         </div>
-        <div class="post_info_line">
+        <div class="post-info-line">
           <label for="author">작성자</label>
           <input
             id="author"
@@ -40,7 +40,7 @@
             :disabled="mode === 'detail'"
           />
         </div>
-        <div v-if="mode === 'detail'" class="post_info_line">
+        <div v-if="mode === 'detail'" class="post-info-line">
           <label for="date">작성일</label>
           <!-- 날짜는 직접 입력하지 않음.-->
           <input
@@ -50,7 +50,7 @@
             :disabled=true
           />
         </div>
-        <div class="post_info_line">
+        <div class="post-info-line">
           <textarea
             id="contents"
             type="text"

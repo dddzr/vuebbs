@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="board">
-        <div class="board_header">
+        <div class="board-header">
             <h1>{{ selectedBoard.label }}</h1>
             <div></div>
             <button @click="goToCreate">게시글 작성</button>

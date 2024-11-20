@@ -39,7 +39,7 @@
     margin-left: var(--sidebar-width);
 }
 
-.board_header {
+.board-header {
     display: flex;
     height: 70px;
     align-items: center;

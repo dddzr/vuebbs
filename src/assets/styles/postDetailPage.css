@@ -11,7 +11,7 @@
     margin-left: auto;
   }
 }
-.post_info_line {
+.post-info-line {
   display: flex;
   label {
     display: block;
