@@ -11,7 +11,8 @@
     margin-left: auto;
   }
 }
-.post-info-line {
+
+.input-container {
   display: flex;
   label {
     display: block;
