@@ -37,7 +37,7 @@ export default {
     // 게시판 선택 시 상태 업데이트
     const handleBoardSelection = (menuItem) => {
       postStore.setSelectedBoard(menuItem); // 선택된 게시판을 store에 업데이트
-      postStore.fetchPosts(menuItem.value); // 게시판에 맞는 게시글 데이터 가져오기
+      postStore.fetchPosts(menuItem); // 게시판에 맞는 게시글 데이터 가져오기
     };
 
     return {

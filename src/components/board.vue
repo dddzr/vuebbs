@@ -50,11 +50,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="post in postStore.paginatedPosts" :key="post.id" @click="goToDetail(post)">
+            <tr v-for="post in postStore.paginatedPosts" :key="post.id">
                 <!-- <td>{{ post.category }}</td> -->
-                <td>{{ post.title }}</td>
+                <td @click="goToDetail(post)">{{ post.title }}</td>
                 <td>{{ post.author }}</td>
-                <td>{{ post.date }}</td>
+                <td>{{ post.created_at }}</td>
                 <td>{{ post.view_count }}</td>
                 <td>{{ post.like_count }}</td>
                 <td>{{ post.comment_count }}</td>
