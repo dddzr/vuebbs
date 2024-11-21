@@ -1,0 +1,40 @@
+:root {
+  --theme-color-1: #bfbfbf;
+  --theme-color-2: #696969;
+  --theme-color-3: #363636;
+  --background-color-1: #ffffff;
+  --button-color-1: #dbdbdb;
+  --text-color-1: #333333;
+  --text-color-2: #ffffff;
+  --font-size-small: 12px; 
+  --font-size-normal: 14px; 
+  --font-size-big: 16px; 
+}
+
+label {
+  display: block;
+  width: 150px;
+  margin-bottom: 5px;
+}
+
+button {
+  width: 100px;
+  height: 30px;
+  font-size: var(--font-size-normal);
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  font-size: var(--font-size-normal);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+select {
+  flex: 1;
+  padding: 10px;
+  font-size: var(--font-size-normal);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}

@@ -1,0 +1,49 @@
+@import './basic.css';
+
+.page-title-bar {
+  display: flex;
+  align-items: center;
+  h1 {
+    flex-grow: 1;
+    text-align: center;
+  }
+  button {
+    margin-left: auto;
+  }
+}
+
+.input-container {
+  display: flex;
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  label {
+    width: 150px;
+  }
+  input {
+    display: block;
+    margin-bottom: 15px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+.content_area {
+  width: 100%;
+  height: calc(100vh - 400px); /* 화면 높이에서 상단 요소 제외 */
+  max-height: 100%;
+  margin-bottom: 20px;
+  overflow-y: auto;
+  resize: none;
+}
+
+.post-container {
+  width: 80%;
+  margin-top: 60px;
+  margin: 0 auto;
+  padding: 20px;
+  /* border: 1px solid #ccc; */
+  /* border-radius: 5px; */
+}

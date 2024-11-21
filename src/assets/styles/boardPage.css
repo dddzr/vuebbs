@@ -1,0 +1,86 @@
+@import './basic.css';
+
+:root {
+    --sidebar-width: 200px;
+}
+
+/* 좌측 카테고리 메뉴 */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--theme-color-1);
+    position: fixed;
+    top: 60px; /* 상단 메뉴 아래에 위치 */
+    bottom: 0;
+    left: 0px;
+
+    .sidebar_header{
+        padding-top: 20px;
+        background-color: var(--theme-color-1);
+        height: 100px;
+        font-size: large;
+    }
+
+    .sidebar-item {
+        button {
+            background-color: var(--theme-color-1);
+            border: 1px solid #cccccc00;
+            height: 100%;
+            width: 100%;
+            padding: 10px;
+            color: var(--text-color-2)
+        }    
+        button:hover {
+            background-color: var(--theme-color-2);
+        }
+    }
+}
+
+.board {
+    margin-left: var(--sidebar-width);
+}
+
+.board-header {
+    display: flex;
+    height: 70px;
+    align-items: center;
+    button {
+        margin-left: auto;
+    }
+}
+
+.filter {
+    display: flex;
+    margin-bottom: 20px;
+    align-items: center;
+    input {
+        width: 500px;
+    }
+    select {
+        width: 150px;
+        margin-left: 10px;
+    }
+    button {
+        margin-left: 10px;
+    }      
+}
+
+.post-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.post-list th,
+.post-list td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.post-list th {
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.post-list td:hover {
+    cursor: pointer;
+}
