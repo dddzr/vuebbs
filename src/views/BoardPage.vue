@@ -5,7 +5,7 @@
     <!-- 왼쪽 메뉴 영역 -->
     <SideMenu :menuItems="menuItems" @board-selected="handleBoardSelection" />
     <!-- 게시판 영역 -->
-    <Board  :selectedBoard="selectedBoard" />
+    <Board/>
   </div>
 </template>
 

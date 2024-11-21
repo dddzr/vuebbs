@@ -1,8 +1,10 @@
 <template>
     <div>
-        <div class="board">
+      <!-- 로딩 화면 -->
+      <loading-spinner v-if="isLoading" />
+      <div v-else class="board">
         <div class="board-header">
-            <h1>{{ selectedBoard.label }}</h1>
+            <h1>{{ postStore.selectedBoard.label }}</h1>
             <div></div>
             <button @click="goToCreate">게시글 작성</button>
         </div>
@@ -12,11 +14,11 @@
             <input
             type="text"
             placeholder="검색"
-            v-model="filterKeyword"
+            v-model="postStore.filterKeyword"
             />      
             <!-- 검색 조건 셀렉트박스 -->
             <div class="filter-options">
-            <select v-model="searchType">
+            <select v-model="postStore.searchType">
                 <option value="title">제목</option>
                 <option value="author">작성자</option>
                 <option value="contents">내용</option>
@@ -48,7 +50,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="post in paginatedPosts" :key="post.id" @click="goToDetail(post)">
+            <tr v-for="post in postStore.paginatedPosts" :key="post.id" @click="goToDetail(post)">
                 <!-- <td>{{ post.category }}</td> -->
                 <td>{{ post.title }}</td>
                 <td>{{ post.author }}</td>
@@ -75,8 +77,9 @@
 <script>
 // import { storeToRefs } from 'pinia';
 import { usePostStore } from '@/stores/postStore';
+import loadingSpinner from '@/components/loadingSpinner';
 // import Pagination from "vue3-pagination"; //페이지
-import '@/assets/styles/boardPage.css'; 
+import '@/assets/styles/boardPage.css';
 
 export default {
   name: "BoardPage",
@@ -85,6 +88,7 @@ export default {
     return {postStore};
   },
   components: {
+    loadingSpinner
     // Pagination,
   },
   props: {
@@ -92,32 +96,20 @@ export default {
   },
   data() {
     return {
-      searchType: "title",
-      filterKeyword: "",
-      filteredPosts: [],
+      isLoading: false,
       currentPage: 1,
       postsPerPage: 5,
     };
-  },mounted() {
-    this.filteredPosts = this.postStore.posts;
-  },
-  computed: {
-    paginatedPosts() {
-      const start = (this.currentPage - 1) * this.postsPerPage;
-      const end = start + this.postsPerPage;
-      return this.filteredPosts.slice(start, end);
-    },
-  },
-  watch: {
-    // posts() {
-    //   this.currentPage = 1;
-    // },
-    selectedBoard: {
-      handler(newBoard) {
-        this.postStore.fetchPosts(newBoard);
-      },
-      immediate: true
-    }
+  },  
+  async mounted() {
+    this.isLoading = true; // 로딩 시작
+      try {
+        await this.postStore.fetchPosts(this.postStore.selectedBoard);
+      } catch (error) {
+        console.error("게시글 로딩 중 오류 발생:", error);
+      } finally {
+        this.isLoading = false; // 로딩 종료
+      }
   },
   methods: {
     goToDetail(post) {
@@ -139,10 +131,7 @@ export default {
       }
     },
     applyFilter() {
-      const searchType = this.searchType;
-      this.filteredPosts = this.postStore.posts.filter((post) => {
-        return post[searchType].includes(this.filterKeyword);
-      });
+      this.postStore.setfilteredPosts();
     },
     changePage(page) {
       this.currentPage = page;
