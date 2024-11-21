@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-VuebbsApplication<vuebbs>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.bbs.vuebbs.VuebbsApplication",
+            "projectName": "vuebbs",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

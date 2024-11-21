@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bbs.vuebbs.mapper.PostMapper">
+    <select id="selectPost" resultType="com.bbs.vuebbs.model.Post">
+        SELECT p.*, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at 
+        FROM post p
+        WHERE p.board_id = #{board_id};
+    </select>
+    <insert id="insertPost">
+        INSERT INTO post (title, author, content, board_id, created_at, updated_at)
+        VALUES (#{title}, #{author}, #{content}, #{board_id}, NOW(), NOW());
+    </insert>
+</mapper>
