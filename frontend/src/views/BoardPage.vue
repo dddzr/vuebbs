@@ -28,12 +28,6 @@ export default {
   setup() {
     const postStore = usePostStore(); // store 초기화
 
-    // 선택된 게시판 상태를 반영
-    const selectedBoard = postStore.selectedBoard;
-    
-    // 게시글 목록과 필터링된 게시글 목록 가져오기
-    const paginatedPosts = postStore.paginatedPosts;
-
     // 게시판 선택 시 상태 업데이트
     const handleBoardSelection = (menuItem) => {
       postStore.setSelectedBoard(menuItem); // 선택된 게시판을 store에 업데이트
@@ -41,8 +35,6 @@ export default {
     };
 
     return {
-      selectedBoard,
-      paginatedPosts,
       handleBoardSelection
     };
   }
