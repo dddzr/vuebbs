@@ -102,20 +102,20 @@ export default {
     };
   },  
   async mounted() {
-    this.isLoading = true; // 로딩 시작
+    this.isLoading = true;
       try {
         await this.postStore.fetchPosts(this.postStore.selectedBoard);
       } catch (error) {
-        console.error("게시글 로딩 중 오류 발생:", error);
+        console.error("error in Loading Post List: ", error);
       } finally {
-        this.isLoading = false; // 로딩 종료
+        this.isLoading = false;
       }
   },
   methods: {
     goToDetail(post) {
       this.$router.push({
         name: "PostDetailPage",
-        params: { id: post.id }, //url 경로
+        params: { id: post.id },
         query: { post: JSON.stringify(post), mode: "detail" },
       });
     },
