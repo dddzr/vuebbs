@@ -2,8 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router';
 import BoardPage from '@/views/BoardPage.vue'
 import PostDetailPage from '@/views/PostDetailPage.vue'
 import LoginPage from '@/views/LoginPage.vue'
+import SignUpPage from '@/views/SignUpPage'
 
 const routes = [
+  {
+    path: '/signup',
+    name: 'SignUpPage',
+    component: SignUpPage,
+  },
   {
     path: '/login',
     name: 'LoginPage',

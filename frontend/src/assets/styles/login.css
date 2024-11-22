@@ -1,0 +1,48 @@
+
+@import './basic.css';
+
+  .login_container, 
+  .signup_container {
+    max-width: 400px;
+    width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    label {
+      display: block;
+    }
+    label {
+      width: 150px;
+    }
+    input {
+      display: block;
+      padding: 8px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .auth-links {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    label {
+      width: fit-content;
+      cursor: pointer;
+      font-size: 14px;
+      margin-inline: 5px; 
+      color: #007bff;
+    }
+  }
+
+  .check-btn {
+    margin-left: 10px;
+    cursor: pointer;
+  }
