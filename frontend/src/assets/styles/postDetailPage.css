@@ -14,16 +14,16 @@
 
 .input-container {
   display: flex;
+  align-items: center;
+  margin-bottom: 15px;
   label {
     display: block;
-    margin-bottom: 5px;
   }
   label {
     width: 150px;
   }
   input {
     display: block;
-    margin-bottom: 15px;
     padding: 8px;
     width: 100%;
     box-sizing: border-box;
@@ -46,4 +46,73 @@
   padding: 20px;
   /* border: 1px solid #ccc; */
   /* border-radius: 5px; */
+}
+
+.reaction-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.likes,
+.views {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+  color: #555;
+  margin-right: 20px;
+}
+
+.likes {  
+  cursor: pointer;
+}
+
+/* .reaction-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(to right, #ff9a9e, #fad0c4);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.reaction-button:hover {
+  transform: scale(1.1);
+  background: linear-gradient(to right, #fad0c4, #ff9a9e);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+} */
+
+.like-animation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  font-weight: bold;
+  color: #ff4d4f;
+  opacity: 1;
+  animation: fadeOut 1.5s ease-in-out forwards;
+  z-index: 1000;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
 }

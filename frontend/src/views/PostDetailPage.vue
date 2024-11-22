@@ -45,12 +45,12 @@
           />
         </div>
         <div v-if="mode === 'detail'" class="input-container">
-          <label for="date">작성일</label>
+          <label for="created_at">작성일</label>
           <!-- 날짜는 직접 입력하지 않음.-->
           <input
-            id="date"
-            type="date"
-            v-model="form.date"
+            id="created_at"
+            type="created_at"
+            v-model="form.created_at"
             :disabled=true
           />
         </div>
@@ -66,6 +66,22 @@
         </div>
         <button v-if="mode === 'create'" type="submit">작성 완료</button>
       </form>
+      <div class="reaction-container" v-if="mode === 'detail'">
+        <div class="views">
+          👀 조회수: {{ form.view_count || 0 }}
+        </div>
+        <div @click="handleLike" class="likes">
+          ❤️ 좋아요: {{ form.like_count || 0 }}
+        </div>
+      </div>
+
+      <!-- 좋아요 애니메이션 -->
+      <div
+        v-if="showHeart"
+        class="like-animation"
+      >
+        ❤️
+      </div>
     </div>    
   </div>
 </template>
@@ -95,10 +111,10 @@ export default {
     post: {
       type: Object,
       default: () => ({
-        category: "",
+        // category: "",
         title: "",
         author: "",
-        date: "",
+        created_at: "",
       }),
     },
   },
@@ -106,9 +122,22 @@ export default {
     return {
       isLoading: false,
       form: { ...this.post }, // 게시글 데이터를 복사하여 양방향 바인딩
+      showHeart: false,
     };
   },
+  mounted() {
+    if (this.mode === "detail") {
+      this.form.view_count++;
+    }
+  },
   methods: {
+    handleLike() {
+      this.form.like_count++;
+      this.showHeart = true;
+      setTimeout(() => {
+        this.showHeart = false; // 1.5초 후 하트 숨김
+      }, 1500);
+    },
     async handleSubmit() {
       this.isLoading = true; // 로딩 시작
       try {

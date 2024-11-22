@@ -34,10 +34,9 @@ export const usePostStore = defineStore('post', {
       });
     },     
     async fetchPosts(board) { 
-      // 게시글 목록을 가져오는 함수
       if (!board) return;
       try {
-        const url = "/post/selectPost/"+ board.id;
+        const url = "/post/selectPostList/"+ board.id;
         const response = await axios.get(url);
         this.posts = response.data;
       } catch (error) {
@@ -52,8 +51,27 @@ export const usePostStore = defineStore('post', {
       this.filterKeyword = "";
       this.filteredPosts = this.posts;
     },
+    async increaseLikeCount(post){
+      try {
+        const url = "/post/increaseLikeCount";
+        const response = await axios.post(url, post.post_id);
+        console.log(response);
+      } catch (error) {
+        console.error("error in increaseLikeCount: ", error);
+        throw error;
+      }
+    },
+    async increaseViewCount(post){
+      try {
+        const url = "/post/increaseViewCount";
+        const response = await axios.post(url, post.post_id);
+        console.log(response);
+      } catch (error) {
+        console.error("error in increaseViewCount: ", error);
+        throw error;
+      }
+    },
     async insertPost(post){
-      // 게시글 등록
       if (!post) return;
       post.board_id = this.selectedBoard.id;
       try {
