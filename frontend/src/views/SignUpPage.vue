@@ -5,22 +5,22 @@
         <!-- 사용자명 입력 -->
         <div class="input-container">
           <label>이름</label>
-          <input type="text" v-model="username" required />
-          <button type="button" @click="checkDuplication('username', username)" class="check-btn">중복검사</button>
+          <input type="text" v-model="username" @input="resetAvailability('username')" required />
+          <button type="button" @click="checkDuplication('username', username)" :disabled="userStore.isAvailable.username" class="check-btn">중복검사</button>
         </div>
         
         <!-- 이메일 입력 -->
         <div class="input-container">
           <label>이메일</label>
-          <input type="email" v-model="email" required />
-          <button type="button" @click="checkDuplication('email', email)" class="check-btn">중복검사</button>
+          <input type="email" v-model="email" @input="resetAvailability('email')" required />
+          <button type="button" @click="checkDuplication('email', email)" :disabled="userStore.isAvailable.email" class="check-btn">중복검사</button>
         </div>
   
         <!-- 아이디 입력 -->
         <div class="input-container">
           <label>아이디</label>
-          <input type="text" v-model="id" required />
-          <button type="button" @click="checkDuplication('id', id)" class="check-btn">중복검사</button>
+          <input type="text" v-model="id" @input="resetAvailability('id')" required />
+          <button type="button" @click="checkDuplication('id', id)" :disabled="userStore.isAvailable.id" class="check-btn">중복검사</button>
         </div>
         
         <!-- 비밀번호 입력 -->
@@ -82,7 +82,11 @@ import '@/assets/styles/login.css';
       checkDuplication(type, vaule) {
         this.userStore.checkDuplication(type, vaule);
       },
-
+      // 입력값이 변경될 때 중복 검사 결과를 리셋
+      resetAvailability(type) {
+        // this.userStore.setAvailability(type, false);
+        this.userStore.commit('setAvailability', { type, value: false });
+      },
       // 로그인 페이지로 이동
       goToLogin() {
         this.$router.push("/login");

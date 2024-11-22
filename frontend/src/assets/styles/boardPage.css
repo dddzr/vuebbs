@@ -9,9 +9,11 @@
     width: var(--sidebar-width);
     background-color: var(--theme-color-1);
     position: fixed;
-    top: 60px; /* 상단 메뉴 아래에 위치 */
+    top: 61px; /* 상단 메뉴 아래에 위치 */
     bottom: 0;
     left: 0px;
+    font-weight: 600;
+    border-right: 1px solid var(--menu-border-color);
 
     .sidebar_header{
         padding-top: 20px;
@@ -27,7 +29,7 @@
             height: 100%;
             width: 100%;
             padding: 10px;
-            color: var(--text-color-2)
+            color: var(--text-color-2);
         }    
         button:hover {
             background-color: var(--theme-color-2);

@@ -21,14 +21,14 @@ public class UserService {
     }
 
     // 필드 중복 검사 (type에 따라 검사)
-    public Integer checkDuplication(String type, String value) {
+    public boolean checkDuplication(String type, String value) {
         int count = userMapper.checkDuplication(type, value);
 
         if (count > 0) {
             // throw new RuntimeException(type + "은(는) 중복된 값입니다.");
-            return 0;
+            return false;
         }
-        return 1;
+        return true;
     }
 
     public void registerUser(User user) {

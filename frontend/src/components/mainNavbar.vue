@@ -1,7 +1,7 @@
 <template>
     <div class="navbar">
       <div class="left-menu">
-        <button @click="goHome">홈</button>
+        <button @click="goHome">🏠 홈</button>
       </div>
       <div class="right-menu">
         <button v-if="isLoggedIn" @click="goToProfile">프로필</button>
@@ -47,6 +47,7 @@
         left: 0px;
         height: 60px;
         width: 100%;
+        border-bottom: 1px solid var(--menu-border-color);
         button {
             background-color: var(--theme-color-1);            
             /* background: none; */
@@ -60,8 +61,13 @@
             cursor: pointer;
         }
     }
-
+    .left-menu {
+      width: 200px;
+    }
     .left-menu button {
+      width: 100%;
+      font-size: 18px;
+      font-weight: 600;
     }
 
     .right-menu button {
