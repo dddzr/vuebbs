@@ -6,7 +6,7 @@
         <div class="board-header">
             <h1>{{ postStore.selectedBoard.label }}</h1>
             <div></div>
-            <button @click="goToCreate">게시글 작성</button>
+            <button @click="goToCreatePost">게시글 작성</button>
         </div>
 
         <!-- 검색 필터 -->
@@ -52,7 +52,7 @@
             <tbody>
             <tr v-for="post in postStore.paginatedPosts" :key="post.id">
                 <!-- <td>{{ post.category }}</td> -->
-                <td @click="goToDetail(post)">{{ post.title }}</td>
+                <td @click="goToVeiwPost(post)">{{ post.title }}</td>
                 <td>{{ post.author }}</td>
                 <td>{{ post.created_at }}</td>
                 <td>{{ post.view_count }}</td>
@@ -112,16 +112,39 @@ export default {
       }
   },
   methods: {
-    goToDetail(post) {
-      this.$router.push({
-        name: "PostDetailPage",
+    goToVeiwPost(post) {
+      /* 데이터 넘기는 방법.
+      1. emit (부모-자식간 데이터 전달)
+      this.$emit('goToVeiwPost', post);
+      - 읽기페이지를 부모자식 연결해야하고,
+      - 새로 고침시 사라진다.
+      
+      2.라우터 이용
+        this.$router.push({
+        name: "ViewPostPage",
         params: { id: post.id },
-        query: { post: JSON.stringify(post), mode: "detail" },
+        query: { post: JSON.stringify(post), mode: "view" },
       });
-    },
-    goToCreate() {
+      - query에 전달하는 데이터는 url 파라미터
+      - 새로 고침 시 유지 되지만 url 길어지고 데이터 노출
+
+      3. 스토어 이용    
+      
+      */
+      // 스토어에 게시글 상세 정보를 저장
+      this.postStore.setCurrentPost(post);
+
+      // 상세페이지로 이동
       this.$router.push({
-        name: "PostDetailPage",
+        name: "ViewPostPage",
+        params: { id: post.id },
+        query: { mode: "view" },
+      });
+
+    },
+    goToCreatePost() {
+      this.$router.push({
+        name: "CreatePostPage",
         query: { mode: "create" },
       });
     },

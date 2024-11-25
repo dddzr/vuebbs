@@ -12,8 +12,9 @@ export const usePostStore = defineStore('post', {
     //페이지
     currentPage: 1,
     postsPerPage: 10,
-    //게시글
-    postDetail: null,
+    //현재 게시글
+    mode: null, // view, create, edit
+    currentPost: null,
   }),
   actions: {
     setPosts(posts) {
@@ -22,11 +23,11 @@ export const usePostStore = defineStore('post', {
     setSelectedBoard(board) {
       this.selectedBoard = board;
     },
-    setPostDetail(post) {
-      this.postDetail = post;      
-    },
     setCurrentPage(page) {
       this.currentPage = page;
+    },
+    setCurrentPost(post) {
+      this.currentPost = post;      
     },
     setfilteredPosts() {
       this.filteredPosts = this.posts.filter((post) => {
