@@ -4,12 +4,12 @@
 
 <mapper namespace="com.bbs.vuebbs.mapper.PostMapper">
     <select id="selectPostList" resultType="com.bbs.vuebbs.model.Post">
-        SELECT p.*, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at 
+        SELECT p.*, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted 
         FROM post p
         WHERE p.board_id = #{board_id};
     </select>
     <select id="selectPostDetail" resultType="com.bbs.vuebbs.model.Post">
-        SELECT p.*, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at 
+        SELECT p.*, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted 
         FROM post p
         WHERE p.post_id = #{post_id};
     </select>
@@ -17,6 +17,10 @@
         INSERT INTO post (title, author, content, board_id, created_at, updated_at)
         VALUES (#{title}, #{author}, #{content}, #{board_id}, NOW(), NOW());
     </insert>
+    <delete id="deletePost">
+        DELETE FROM post
+        WHERE post_id = #{post_id};
+    </delete>
     <update id="updateLikeCount">
         UPDATE post
         SET like_count = like_count + 

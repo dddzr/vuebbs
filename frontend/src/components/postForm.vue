@@ -36,7 +36,7 @@
             <input
               id="created_at"
               type="created_at"
-              v-model="form.created_at"
+              v-model="form.created_at_formatted"
               :disabled=true
             />
           </div>
@@ -50,7 +50,7 @@
             >
             </textarea>
           </div>
-          <button v-if="mode === 'create'" type="submit">작성 완료</button>
+          <button v-if="mode === 'create' || mode === 'edit'" type="submit">작성 완료</button>
         </form>
       </div>    
   </template>
@@ -66,10 +66,6 @@
           return ['view', 'create'].includes(value);
         },
       },
-      postData: {
-        type: Object,
-        default: () => ({}),
-      },
     },
     setup() {
       const postStore = usePostStore();
@@ -77,12 +73,22 @@
     },
     data() {
       return {
-        form: { ...this.postStore.currentPost }, // 얕은 복사하여 양방향 바인딩 // currentPost즉시 변경x.
-      };
+        form: { ...this.postStore.currentPost }, // 수정 시 currentPost즉시 변경x.
+      }
     },
+  watch: {
+    'postStore.currentPost': {
+      deep: true, //객체 내부 속성 재귀적 감시
+      immediate: false, // 초기 값을 기반으로 watch 동작 실행
+      handler(newCurrentPost) {
+        this.form = { ...newCurrentPost }; // currentPost변경 시 반영.
+      },
+    },
+  },
     methods: {
       handleSubmit() {
         if (this.mode === 'create') {
+          console.log('handleSubmit called');
           this.$emit('createPost', this.form);
         }
       },

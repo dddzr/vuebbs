@@ -15,13 +15,13 @@
         </button>
       </div>    
   
-      <postForm :mode="'view'" :postData="postData" />
+      <postForm :mode="'view'"/>
       <div class="reaction-container" v-if="mode === 'view'">
         <div class="views">
-          👀 조회수: {{ form.view_count || 0 }}
+          👀 조회수: {{ form?.view_count || 0 }}
         </div>
         <div @click="handleLike" class="likes">
-          ❤️ 좋아요: {{ form.like_count || 0 }}
+          ❤️ 좋아요: {{ form?.like_count || 0 }}
         </div>
       </div>
       <!-- 좋아요 애니메이션 -->
@@ -58,16 +58,6 @@
         required: true,
         validator: (value) => ["view", "create", "modify"].includes(value),
       },
-      /* 스토어 이용하도록 수정
-      post: {
-        type: Object,
-        default: () => ({
-          // category: "",
-          title: "",
-          author: "",
-          created_at: "",
-        }),
-      },*/
     },
     data() {
       return {
@@ -76,8 +66,18 @@
         showHeart: false,
       };
     },
-    mounted() {
-      if (this.mode === "view") {
+    async created() {
+      const postId = this.$route.params.postId; // URL에서 postId 가져오기
+
+      // Store에 데이터가 없으면 서버에서 다시 가져오기
+      if (this.postStore.currentPost == null) {
+        console.log();
+        await this.postStore.fetchPostById(postId); // 새로고침 대응
+        console.log(this.postStore.currentPost);
+        this.form = this.postStore.currentPost;
+        this.form.view_count++;
+      } else {        
+        this.form = this.postStore.currentPost
         this.form.view_count++;
       }
     },
@@ -104,7 +104,10 @@
         this.$router.push("/");
       },
       handleDelete() {
-        this.postStore.deletePost(this.form);
+        if(confirm("게시글을 삭제하시겠습니까?")){
+          this.postStore.deletePost(this.form);
+          this.$router.push("/");
+        }        
       }
     },
   };

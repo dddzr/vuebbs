@@ -50,11 +50,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="post in postStore.paginatedPosts" :key="post.id">
+            <tr v-for="post in postStore.paginatedPosts" :key="post.post_id">
                 <!-- <td>{{ post.category }}</td> -->
                 <td @click="goToVeiwPost(post)">{{ post.title }}</td>
                 <td>{{ post.author }}</td>
-                <td>{{ post.created_at }}</td>
+                <td>{{ post.created_at_formatted }}</td>
                 <td>{{ post.view_count }}</td>
                 <td>{{ post.like_count }}</td>
                 <td>{{ post.comment_count }}</td>
@@ -136,7 +136,7 @@ export default {
       2.라우터 이용
         this.$router.push({
         name: "ViewPostPage",
-        params: { id: post.id },
+        params: { id: post.post_id },
         query: { post: JSON.stringify(post), mode: "view" },
       });
       - query에 전달하는 데이터는 url 파라미터
@@ -147,11 +147,10 @@ export default {
       */
       // 스토어에 게시글 상세 정보를 저장
       this.postStore.setCurrentPost(post);
-
       // 상세페이지로 이동
       this.$router.push({
         name: "ViewPostPage",
-        params: { id: post.id },
+        params: { postId: post.post_id },
         query: { mode: "view" },
       });
 

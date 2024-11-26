@@ -9,6 +9,7 @@ public class Post {
     private String author;
     private String content;
     private String created_at;
+    private String created_at_formatted;
     private String updated_at;
     private Integer board_id;
     private Integer comment_count;

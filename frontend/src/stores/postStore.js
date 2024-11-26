@@ -51,6 +51,18 @@ export const usePostStore = defineStore('post', {
       this.filterKeyword = "";
       this.filteredPosts = this.posts;
     },
+    async fetchPostById(postId) { 
+      if (!postId) return;
+      try {
+        const url = "/post/selectPostDetail/"+ postId;
+        const response = await axios.get(url);
+        this.currentPost = response.data;
+      } catch (error) {
+        console.error("error in fetchPostById: ", error);
+        throw error;
+      }
+      this.initFilter();
+    }, 
     async increaseLikeCount(post){
       try {
         const url = "/post/increaseLikeCount";
@@ -80,6 +92,17 @@ export const usePostStore = defineStore('post', {
         console.log(response);
       } catch (error) {
         console.error("error in insertPost: ", error);
+        throw error;
+      }
+    },
+    async deletePost(post){
+      if (!post) return;
+      try {
+        const url = "/post/deletePost";
+        const response = await axios.post(url, post);
+        console.log(response);
+      } catch (error) {
+        console.error("error in deletePost: ", error);
         throw error;
       }
     }

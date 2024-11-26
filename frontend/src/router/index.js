@@ -23,13 +23,12 @@ const routes = [
     component: BoardPage,
   },
   {
-    path: '/post/view',
+    path: '/post/view/:postId',
     name: 'ViewPostPage',
     component: ViewPostPage,
     props: route => ({
-      id: route.params.id,
+      postId: route.params.postId,
       mode: route.query.mode,
-      post: JSON.parse(route.query.post || "{}"),
     }),
   },
   {
@@ -39,7 +38,6 @@ const routes = [
     props: route => ({
       id: route.params.id,
       mode: route.query.mode,
-      post: JSON.parse(route.query.post || "{}"),
     }),
   },
 ]

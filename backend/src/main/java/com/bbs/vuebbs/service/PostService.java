@@ -31,6 +31,10 @@ public class PostService {
         postMapper.insertPost(post);
     }
 
+    public void deletePost(Post post) {
+        postMapper.deletePost(post);
+    }
+
     @Transactional
     public void increaseLikeCount(Integer post_id, Integer user_id) {
         // 좋아요 수 증가

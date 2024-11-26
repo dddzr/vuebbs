@@ -35,6 +35,12 @@ public class PostController {
         return "insertPost success.";
     }
 
+    @PostMapping("/deletePost")
+    public String deletePost(@RequestBody Post post) {
+        postService.deletePost(post);
+        return "deletePost success.";
+    }
+
     @PostMapping("/increaseLikeCount")
     public String increaseLikeCount(@RequestParam Integer post_id, @RequestParam Integer user_id) {
         postService.increaseLikeCount(post_id, user_id);

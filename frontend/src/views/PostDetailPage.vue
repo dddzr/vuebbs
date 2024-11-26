@@ -106,7 +106,7 @@ export default {
     mode: {
       type: String,
       required: true,
-      validator: (value) => ["detail", "create"].includes(value),
+      validator: (value) => ["view", "create", "edit"].includes(value),
     },
     post: {
       type: Object,
