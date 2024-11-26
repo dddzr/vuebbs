@@ -22,18 +22,8 @@ const routes = [
     name: 'BoardPage',
     component: BoardPage,
   },
-  // {
-  //   path: '/post',
-  //   name: 'PostDetailPage',
-  //   component: PostDetailPage,
-  //   props: route => ({
-  //     id: route.params.id,
-  //     mode: route.query.mode,
-  //     post: JSON.parse(route.query.post || "{}"),
-  //   }),
-  // },
   {
-    path: '/readpost',
+    path: '/post/view',
     name: 'ViewPostPage',
     component: ViewPostPage,
     props: route => ({
@@ -43,7 +33,7 @@ const routes = [
     }),
   },
   {
-    path: '/writepost',
+    path: '/post/create',
     name: 'CreatePostPage',
     component: CreatePostPage,
     props: route => ({
@@ -58,5 +48,16 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+
+// 전역 네비게이션 가드
+// TODO: 스토어 getter로 isLoggedIn() 생성, 로그인 여부 판단.
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = true;// !isLoggedIn() //localStorage.getItem('authToken');
+  if (to.path === '/post/create' && !isLoggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
+});
 
 export default router

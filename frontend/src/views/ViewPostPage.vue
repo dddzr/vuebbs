@@ -3,35 +3,37 @@
       <!-- 네비게이션 바 -->
       <mainNavbar />
       <!-- 로딩 화면 -->
-      <loading-spinner v-if="isLoading" />
+      <loading-spinner v-if="uiStore.isLoading" />
   
       <div class="page-title-bar">
         <h1 v-if="mode === 'view'">게시글 상세</h1>
         <button style="float: right;" @click="goBack">
           목록
+        </button>       
+        <button style="float: right; margin-left: 10px;" @click="handleDelete">
+          삭제<!-- TODO: v-if 작성자 = 사용자 로직 추가 필요 -->
         </button>
       </div>    
   
-      <div class="post-info">
-        <postForm :mode="'view'" :postData="postData" />
-        <div class="reaction-container" v-if="mode === 'view'">
-          <div class="views">
-            👀 조회수: {{ form.view_count || 0 }}
-          </div>
-          <div @click="handleLike" class="likes">
-            ❤️ 좋아요: {{ form.like_count || 0 }}
-          </div>
+      <postForm :mode="'view'" :postData="postData" />
+      <div class="reaction-container" v-if="mode === 'view'">
+        <div class="views">
+          👀 조회수: {{ form.view_count || 0 }}
         </div>
-  
-        <!-- 좋아요 애니메이션 -->
-        <div v-if="showHeart" class="like-animation">
-          ❤️
+        <div @click="handleLike" class="likes">
+          ❤️ 좋아요: {{ form.like_count || 0 }}
         </div>
-      </div>    
+      </div>
+      <!-- 좋아요 애니메이션 -->
+      <div v-if="showHeart" class="like-animation">
+        ❤️
+      </div>
+
     </div>
   </template>
   
   <script>
+  import { useUIStore } from '@/stores/uiStore';
   import { usePostStore } from '@/stores/postStore';
   import mainNavbar from '@/components/mainNavbar.vue';
   import loadingSpinner from '@/components/loadingSpinner.vue';
@@ -47,7 +49,8 @@
     },
     setup() {
       const postStore = usePostStore();
-      return { postStore };
+      const uiStore = useUIStore();
+      return {postStore, uiStore};
     },
     props: {
       mode: {
@@ -68,8 +71,8 @@
     },
     data() {
       return {
-        isLoading: false,
         form: { ...this.postStore.currentPost }, // 얕은 복사하여 양방향 바인딩 // currentPost즉시 변경x.
+        isLikeDisabled: false,
         showHeart: false,
       };
     },
@@ -84,16 +87,25 @@
     },
     methods: {
       handleLike() {
-        this.postStore.increaseLikeCount(this.form);
+        if (this.isLikeDisabled) {  // 클릭 막기
+          alert("이미 좋아요 한 글입니다.");
+          return;
+        }
+        this.isLikeDisabled = true;
+
+        // this.postStore.increaseLikeCount(this.form); // TODO: DB연동, 사용자 별 1회만 누르도록/좋아요 취소
         this.form.like_count++;
         this.showHeart = true;
         setTimeout(() => {
-          this.showHeart = false; // 1.5초 후 하트 숨김
+          this.showHeart = false;
         }, 1500);
       },
       goBack() {
         this.$router.push("/");
       },
+      handleDelete() {
+        this.postStore.deletePost(this.form);
+      }
     },
   };
   </script>

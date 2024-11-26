@@ -47,7 +47,6 @@ export const usePostStore = defineStore('post', {
       this.initFilter();
     },    
     initFilter() { 
-      console.log("initFilter");
       this.searchType = "title";
       this.filterKeyword = "";
       this.filteredPosts = this.posts;
@@ -87,7 +86,6 @@ export const usePostStore = defineStore('post', {
   },
   getters: { //상태 변경 감지 (watch 같은 것)
     paginatedPosts(state) {
-      console.log("pageing");
       const start = (state.currentPage - 1) * state.postsPerPage;
       const end = start + state.postsPerPage;
       return state.filteredPosts.slice(start, end);

@@ -3,7 +3,7 @@
       <!-- 네비게이션 바 -->
       <mainNavbar />
       <!-- 로딩 화면 -->
-      <loading-spinner v-if="isLoading" />
+      <loading-spinner v-if="uiStore.isLoading" />
   
       <div class="page-title-bar">
         <h1 v-if="mode === 'create'">게시글 작성</h1>
@@ -70,6 +70,7 @@
   </template>
   
   <script>
+  import { useUIStore } from '@/stores/uiStore';
   import { usePostStore } from '@/stores/postStore';
   import mainNavbar from '@/components/mainNavbar.vue';
   import loadingSpinner from '@/components/loadingSpinner';
@@ -83,7 +84,8 @@
     },
     setup() {
       const postStore = usePostStore();
-      return { postStore };
+      const uiStore = useUIStore();
+      return {postStore, uiStore};
     },
     props: {
       mode: {
@@ -103,13 +105,12 @@
     },
     data() {
       return {
-        isLoading: false,
         form: { ...this.post }, // 게시글 데이터를 복사하여 양방향 바인딩
       };
     },
     methods: {
       async handleSubmit() {
-        this.isLoading = true; // 로딩 시작
+        this.uiStore.setIsLoading(true);
         try {
           await this.postStore.insertPost(this.form);
           alert("게시글이 작성되었습니다.");
@@ -118,7 +119,7 @@
           alert("게시글이 작성에 실패했습니다.");
           console.error("error in insertPost: ", error);
         } finally {
-          this.isLoading = false; // 로딩 종료
+          this.uiStore.setIsLoading(false);
         }
       },
       goBack() {

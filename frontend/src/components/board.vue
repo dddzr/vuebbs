@@ -1,7 +1,7 @@
 <template>
     <div>
       <!-- 로딩 화면 -->
-      <loading-spinner v-if="isLoading" />
+      <loading-spinner v-if="uiStore.isLoading" />
       <div v-else class="board">
         <div class="board-header">
             <h1>{{ postStore.selectedBoard.label }}</h1>
@@ -76,6 +76,7 @@
 
 <script>
 // import { storeToRefs } from 'pinia';
+import { useUIStore } from '@/stores/uiStore';
 import { usePostStore } from '@/stores/postStore';
 import loadingSpinner from '@/components/loadingSpinner';
 // import Pagination from "vue3-pagination"; //페이지
@@ -85,7 +86,8 @@ export default {
   name: "BoardPage",
   setup() {
     const postStore = usePostStore();
-    return {postStore};
+    const uiStore = useUIStore();
+    return {postStore, uiStore};
   },
   components: {
     loadingSpinner
@@ -96,19 +98,18 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
       currentPage: 1,
       postsPerPage: 5,
     };
   },  
   async mounted() {
-    this.isLoading = true;
+    this.uiStore.setIsLoading(true);
       try {
         await this.postStore.fetchPosts(this.postStore.selectedBoard);
       } catch (error) {
         console.error("error in Loading Post List: ", error);
       } finally {
-        this.isLoading = false;
+        this.uiStore.setIsLoading(false);
       }
   },
   methods: {
