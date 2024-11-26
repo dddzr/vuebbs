@@ -52,4 +52,10 @@ public class PostController {
         postService.decreaseLikeCount(post_id, user_id);
         return "decreaseLikeCount success.";
     }
+
+    @PostMapping("/increaseViewCount")
+    public String increaseViewCount(@RequestParam Integer post_id, @RequestParam Integer user_id) {
+        // postService.increaseViewCount(post_id, user_id);
+        return "increaseViewCount success.";
+    }
 }

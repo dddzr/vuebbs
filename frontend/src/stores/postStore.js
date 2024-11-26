@@ -64,6 +64,7 @@ export const usePostStore = defineStore('post', {
       this.initFilter();
     }, 
     async increaseLikeCount(post){
+      if (!post) return;
       try {
         const url = "/post/increaseLikeCount";
         const response = await axios.post(url, post.post_id);
@@ -74,13 +75,27 @@ export const usePostStore = defineStore('post', {
       }
     },
     async increaseViewCount(post){
-      try {
-        const url = "/post/increaseViewCount";
-        const response = await axios.post(url, post.post_id);
-        console.log(response);
-      } catch (error) {
-        console.error("error in increaseViewCount: ", error);
-        throw error;
+      if (!post) return;
+      const postId = post.post_id;
+      /*
+        조회수 증가 방법
+        1. 유저별 1번 증가
+        2. 세션 단위 증가(브라우저 열려 있는 동안 1회) => 채용
+        3. 시간 기반(쿠키/세션/DB 등에 조회시간 기록)
+      */
+      const viewedPosts = JSON.parse(sessionStorage.getItem('viewedPosts') || '[]');
+      if (!viewedPosts.includes(postId)) {
+        try {
+          const url = "/post/increaseViewCount";
+          const response = await axios.post(url, postId);
+          console.log(response);
+          // 세션 스토리지에 저장
+          viewedPosts.push(postId);
+          sessionStorage.setItem('viewedPosts', JSON.stringify(viewedPosts));
+        } catch (error) {
+          console.error("error in increaseViewCount: ", error);
+          throw error;
+        }
       }
     },
     async insertPost(post){

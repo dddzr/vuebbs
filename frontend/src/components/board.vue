@@ -146,7 +146,7 @@ export default {
       3. 스토어 이용    
       
       */
-      // 스토어에 게시글 상세 정보를 저장
+      // 스토어에 게시글 상세 정보를 저장 TODO: 만약 게시글 정보 복잡해서 메인에서 다 안 들고 오면 이부분 생략.
       this.postStore.setCurrentPost(post);
       // 상세페이지로 이동
       this.$router.push({
