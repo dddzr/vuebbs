@@ -11,7 +11,7 @@ export const usePostStore = defineStore('post', {
     filterKeyword: "",
     //페이지
     currentPage: 1,
-    postsPerPage: 10,
+    postsPerPage: 5,
     //현재 게시글
     mode: null, // view, create, edit
     currentPost: null,
@@ -89,6 +89,10 @@ export const usePostStore = defineStore('post', {
       const start = (state.currentPage - 1) * state.postsPerPage;
       const end = start + state.postsPerPage;
       return state.filteredPosts.slice(start, end);
+    },
+    // 전체 페이지 수 반환 (전체 게시물 수 / 한 페이지당 게시물 수)
+    totalPages(state) {
+      return Math.ceil(state.filteredPosts.length / state.postsPerPage);
     }
   }
 });

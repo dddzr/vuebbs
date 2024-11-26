@@ -63,12 +63,24 @@
         </table>
         
         <!-- 페이징 -->
-        <!-- <Pagination
-            v-model:currentPage="currentPage"
-            :total="filteredPosts.length"
-            :per-page="postsPerPage"
-            @change="changePage"
-        /> -->
+         <div class="pagination-container">
+          <v-pagination
+            v-model="postStore.currentPage"
+            :pages="postStore.totalPages"
+            :range-size="3"
+            active-color="#DCEDFF"
+            @update:modelValue="changePage"
+            :hideFirstButton="false"
+            :hideLastButton="false"
+          />
+          <!--
+            pages	Number		Total number of pages
+            rangeSize	Number	1	Number of page around the current page
+            activeColor	String	#DCEDFF	Background color of the current page
+            hideFirstButton	Boolean	false	Hide the button to go to the first page
+            hideLastButton	Boolean	false	Hide the button to go to the last page  
+          -->
+         </div>
         </div>
     </div>
 </template>
@@ -79,7 +91,8 @@
 import { useUIStore } from '@/stores/uiStore';
 import { usePostStore } from '@/stores/postStore';
 import loadingSpinner from '@/components/loadingSpinner';
-// import Pagination from "vue3-pagination"; //페이지
+import VPagination from "@hennge/vue3-pagination";
+import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 import '@/assets/styles/boardPage.css';
 
 export default {
@@ -90,8 +103,8 @@ export default {
     return {postStore, uiStore};
   },
   components: {
-    loadingSpinner
-    // Pagination,
+    loadingSpinner,
+    VPagination
   },
   props: {
     selectedBoard: Object
@@ -158,8 +171,17 @@ export default {
       this.postStore.setfilteredPosts();
     },
     changePage(page) {
-      this.currentPage = page;
+      this.postStore.setCurrentPage(page);
     },
   },
 };
 </script>
+
+<style scpoed>
+.pagination-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 10px;
+}
+</style>
