@@ -15,6 +15,7 @@
             type="text"
             placeholder="검색"
             v-model="postStore.filterKeyword"
+            @keyup.enter="applyFilter()"
             />      
             <!-- 검색 조건 셀렉트박스 -->
             <div class="filter-options">
