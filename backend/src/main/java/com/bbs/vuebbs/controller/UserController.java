@@ -35,10 +35,4 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response); // 상태 코드 409 Conflict
         }
     }
-
-    @PostMapping("/registerUser")
-    public String registerUser (@RequestBody User user) {
-        userService.registerUser(user);
-        return "registerUser success.";
-    }
 }

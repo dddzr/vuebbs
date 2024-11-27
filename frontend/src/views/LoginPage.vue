@@ -8,7 +8,7 @@
       </div>
       <div class="input-container">
         <label>비밀번호</label>
-        <input type="text" v-model="username" required />    
+        <input type="text" v-model="password" required />    
       </div>
       <button type="submit" style="margin-top: 30px;">로그인</button>
     </form>
@@ -19,20 +19,29 @@
 </template>
 
 <script>
+import { useUserStore } from '@/stores/userStore';
 import '@/assets/styles/login.css'; 
 export default {
   data() {
     return {
-      username: "", // 입력한 사용자 이름
+      username: "",
+      password: ""
     };
   },
+  setup() {
+    const userStore = useUserStore();
+    return {userStore};
+  },
   methods: {
-    login() {
-      if (this.username.trim()) {
-        // 사용자 정보를 저장 (예: Vuex, Local Storage, Emit 등)
-        this.$emit("login", this.username);
-        this.$router.push("/"); // 로그인 후 메인 화면으로 이동
-      }
+    async login() {
+      try {
+            await this.userStore.login({username: this.username, password: this.password});
+            this.$router.push("/");
+          } catch (error) {
+            alert("로그인에 실패했습니다. " + error );
+          } finally {
+            //this.isLoading = false;
+          }
     },
     goToSignUp(){
       this.$router.push("/signup");

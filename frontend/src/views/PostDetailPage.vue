@@ -3,7 +3,7 @@
     <!-- 네비게이션 바 -->
     <mainNavbar />
     <!-- 로딩 화면 -->
-    <loading-spinner v-if="isLoading" />
+    <loading-spinner v-if="uiStore.isLoading"/>
 
     <div class="page-title-bar">
       <h1 v-if="mode === 'detail'">게시글 상세</h1>
@@ -87,6 +87,7 @@
 </template>
 
 <script>
+  import { useUIStore } from '@/stores/uiStore';
 import { usePostStore } from '@/stores/postStore';
 import mainNavbar from '@/components/mainNavbar.vue';
 import loadingSpinner from '@/components/loadingSpinner';

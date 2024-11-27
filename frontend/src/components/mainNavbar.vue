@@ -4,23 +4,23 @@
         <button @click="goHome">🏠 홈</button>
       </div>
       <div class="right-menu">
-        <button v-if="isLoggedIn" @click="goToProfile">프로필</button>
+        <button v-if="userStore.isLoggedIn" @click="goToMyPage">My Page</button>
+        <button v-if="userStore.isLoggedIn" @click="userStore.logout()">로그아웃</button>
         <button v-else @click="goToLogin">로그인</button>
       </div>
     </div>
   </template>  
   
   <script>
+  import { useUserStore } from '@/stores/userStore';
   export default {
-    data() {
-    return {
-      isLoggedIn: false
-    };
+  setup() {
+    const userStore = useUserStore();
+    return {userStore};
   },
-    mounted() {
-    // sessionStorage에서 loginId 확인
-    if (typeof window !== 'undefined' && sessionStorage.getItem('loginId') !== null) {
-      this.isLoggedIn = true;
+  mounted() {
+    if (typeof window !== 'undefined' && localStorage.getItem('loginId') !== null) {
+      this.userStore.isLoggedIn = true;
     }
   },
     methods: {
@@ -30,8 +30,8 @@
       goToLogin() {
         this.$router.push('/login');
       },
-      goToProfile() {
-        this.$router.push('/profile');
+      goToMyPage() {
+        this.$router.push('/mypage');
       },
     },
   };
@@ -52,8 +52,8 @@
             background-color: var(--theme-color-1);            
             /* background: none; */
             border: 1px solid #cccccc00;
-            height: 100%;
-            padding: 10px;
+            height: calc(100% - 2px);
+            padding: 5px;
             color: var(--text-color-2)
         }    
         button:hover {

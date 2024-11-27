@@ -2,12 +2,13 @@
     <div class="signup_container">
       <h2>회원가입</h2>
       <form @submit.prevent="signup" style="margin: 50px 0px 10px 0px">
-        <!-- 사용자명 입력 -->
+        <!-- 아이디 입력 -->
         <div class="input-container">
-          <label>이름</label>
+          <label>아이디</label>
           <input type="text" v-model="username" @input="resetAvailability('username')" required />
           <button type="button" @click="checkDuplication('username', username)" :disabled="userStore.isAvailable.username" class="check-btn">중복검사</button>
         </div>
+        <label v-show= userStore.isAvailable?.username class="available-message">사용 가능한 아이디입니다.</label>
         
         <!-- 이메일 입력 -->
         <div class="input-container">
@@ -15,12 +16,12 @@
           <input type="email" v-model="email" @input="resetAvailability('email')" required />
           <button type="button" @click="checkDuplication('email', email)" :disabled="userStore.isAvailable.email" class="check-btn">중복검사</button>
         </div>
+        <label v-show= userStore.isAvailable?.email class="available-message">사용 가능한 이메일입니다.</label>
   
-        <!-- 아이디 입력 -->
+        <!-- 닉네임 입력 -->
         <div class="input-container">
-          <label>아이디</label>
-          <input type="text" v-model="id" @input="resetAvailability('id')" required />
-          <button type="button" @click="checkDuplication('id', id)" :disabled="userStore.isAvailable.id" class="check-btn">중복검사</button>
+          <label>닉네임</label>
+          <input type="text" v-model="nickname" required />
         </div>
         
         <!-- 비밀번호 입력 -->
@@ -49,9 +50,9 @@ import '@/assets/styles/login.css';
   export default {
     data() {
       return {
-        username: "", // 사용자 이름
+        username: "", // 아이디
         email: "", // 이메일
-        id: "", // 아이디
+        nickname: "", // 별명
         password: "", // 비밀번호
         confirmPassword: "", // 비밀번호 확인
       };
@@ -61,20 +62,35 @@ import '@/assets/styles/login.css';
       return {userStore};
     },
     methods: {
-      signup() {
+      async signup() {
         if (this.password !== this.confirmPassword) {
           alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
           return;
         }
+        if (!this.userStore.isAvailable?.username) {
+          alert("아이디 중복검사가 완료되지 않았습니다.");
+          return;
+        }
+        if (!this.userStore.isAvailable?.email) {
+          alert("이메일 중복검사가 완료되지 않았습니다.");
+          return;
+        }
   
-        if (this.name.trim() && this.email.trim() && this.username.trim() && this.password.trim()) {
-          this.$emit("signup", {
-            name: this.name,
-            email: this.email,
-            username: this.username,
-            password: this.password,
-          });
-          this.$router.push("/login");
+        if (this.username.trim() && this.email.trim() && this.nickname.trim() && this.password.trim()) {
+          try {
+            await this.userStore.signup({
+                username: this.username,
+                email: this.email,
+                nickname: this.nickname,
+                password: this.password,
+              });
+            alert("회원가입이 완료되었습니다.");
+            this.$router.push("/login");
+          } catch (error) {
+            alert("회원가입에 실패했습니다.");
+          } finally {
+            //this.isLoading = false;
+          }
         }
       },
       
@@ -84,8 +100,7 @@ import '@/assets/styles/login.css';
       },
       // 입력값이 변경될 때 중복 검사 결과를 리셋
       resetAvailability(type) {
-        // this.userStore.setAvailability(type, false);
-        this.userStore.commit('setAvailability', { type, value: false });
+        this.userStore.setAvailability(type, false);
       },
       // 로그인 페이지로 이동
       goToLogin() {

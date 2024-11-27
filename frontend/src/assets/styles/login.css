@@ -46,3 +46,10 @@
     margin-left: 10px;
     cursor: pointer;
   }
+
+  .available-message {
+    color: green;
+    font-size: 14px;
+    width: 100%;
+    text-align: end;  
+  }

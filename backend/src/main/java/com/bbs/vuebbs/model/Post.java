@@ -1,7 +1,6 @@
 package com.bbs.vuebbs.model;
 
 import lombok.Data;
-
 @Data
 public class Post {
     private Integer post_id;

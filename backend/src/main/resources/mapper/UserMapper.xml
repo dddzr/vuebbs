@@ -3,6 +3,13 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.bbs.vuebbs.mapper.UserMapper">
+
+    <select id="selectUserByUsername">
+        SELECT *
+        FROM user
+        WHERE username = #{username}
+    </select>
+
     <select id="checkDuplication" resultType="int">
         SELECT COUNT(*)
         FROM user
@@ -14,17 +21,14 @@
             <when test="type == 'email'">
                 email = #{value}
             </when>
-            <when test="type == 'id'">
-                id = #{value}
-            </when>
             <otherwise>
-                1 = 0 <!-- 잘못된 type이면 실패하게 만들어서 에러가 나게 하도록 처리 -->
+                1 = 0 <!-- 잘못된 type 예외 -->
             </otherwise>
         </choose>
     </select>
 
     <insert id="insertUser">
-        INSERT INTO user (username, email, id, password, profile_picture) 
-        VALUES (#{username}, #{email}, #{id}, #{password}, #{profilePicture})
+        INSERT INTO user (username, email, nickname, password, profile_picture) 
+        VALUES (#{username}, #{email}, #{nickname}, #{password}, #{profile_picture})
     </insert>
 </mapper>
