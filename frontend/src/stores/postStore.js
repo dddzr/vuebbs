@@ -26,6 +26,9 @@ export const usePostStore = defineStore('post', {
     setCurrentPage(page) {
       this.currentPage = page;
     },
+    setMode(mode) {
+      this.mode = mode;      
+    },
     setCurrentPost(post) {
       this.currentPost = post;      
     },
