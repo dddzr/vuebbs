@@ -5,15 +5,14 @@
     <!-- 왼쪽 메뉴 영역 -->
     <SideMenu :menuItems="menuItems" @board-selected="handleBoardSelection" />
     <!-- 게시판 영역 -->
-    <Board/>
+    <boardMain/>
   </div>
 </template>
 
 <script>
-// import Pagination from "vue3-pagination"; //페이지
 import { usePostStore } from '@/stores/postStore';
 import '@/assets/styles/boardPage.css'; 
-import Board from '@/components/board.vue';
+import boardMain from '@/components/boardMain.vue';
 import mainNavbar from '@/components/mainNavbar.vue';
 import SideMenu from '@/components/sideMenu.vue';
 
@@ -22,8 +21,7 @@ export default {
   components: {
     mainNavbar,
     SideMenu,
-    Board
-    // Pagination,
+    boardMain
   },
   setup() {
     const postStore = usePostStore(); // store 초기화
