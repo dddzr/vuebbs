@@ -4,13 +4,15 @@
 
 <mapper namespace="com.bbs.vuebbs.mapper.PostMapper">
     <select id="selectPostList" resultType="com.bbs.vuebbs.model.Post">
-        SELECT p.*, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted 
+        SELECT p.*, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted, u.nickname as author_nickname
         FROM post p
+        LEFT JOIN user u ON p.author = u.user_id
         WHERE p.board_id = #{board_id};
     </select>
     <select id="selectPostDetail" resultType="com.bbs.vuebbs.model.Post">
-        SELECT p.*, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted 
+        SELECT p.*, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted, u.nickname as author_nickname
         FROM post p
+        LEFT JOIN user u ON p.author = u.user_id
         WHERE p.post_id = #{post_id};
     </select>
     <insert id="insertPost">

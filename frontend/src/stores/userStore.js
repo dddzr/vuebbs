@@ -3,9 +3,9 @@ import axios from 'axios';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    isLoggedIn: false, // 로그인 상태
-    user: null,             // 로그인된 사용자 정보 {}
-    token: null,            // 인증 토큰
+    isLoggedIn: localStorage.getItem('token') ? true : false, // 로그인 상태
+    user: JSON.parse(localStorage.getItem('user')) ?? null,             // 로그인된 사용자 정보 {}
+    token: localStorage.getItem('token') ?? null,            // 인증 토큰
     isAvailable: {
       username: false,
       email: false
@@ -24,6 +24,7 @@ export const useUserStore = defineStore('user', {
 
         // 토큰을 localStorage에 저장
         localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
       } catch (error) {
         if(error.response?.data?.message){
           const errorMessage = error.response.data.message;
@@ -49,6 +50,7 @@ export const useUserStore = defineStore('user', {
 
       // localStorage에서 토큰 삭제
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
       alert("로그아웃 되었습니다.");
     },
     setAvailability(type, value) {
@@ -75,6 +77,6 @@ export const useUserStore = defineStore('user', {
         console.error("error in insertPost: ", error);
         throw error;
       }
-    }
+    },
   }
 });

@@ -22,12 +22,21 @@
             />
           </div>
           <div class="input-container">
-            <label for="author">작성자</label>
+            <label for="author_nickname">작성자</label>
+            <input
+              id="author_nickname"
+              type="text"
+              v-model="form.author_nickname"
+              :disabled=true
+            />
+          </div>
+          <div class="input-container" v-show="false">
+            <label for="author">작성자 아이디</label>
             <input
               id="author"
               type="text"
               v-model="form.author"
-              :disabled="mode === 'view'"
+              :disabled=true
             />
           </div>
           <div v-if="mode === 'view'" class="input-container">
@@ -56,6 +65,7 @@
   </template>
   
   <script>
+  import { useUserStore } from '@/stores/userStore';
   import { usePostStore } from '@/stores/postStore';
   export default {
     props: {
@@ -63,28 +73,36 @@
         type: String,
         required: true,
         validator(value) {
-          return ['view', 'create'].includes(value);
+          return ['view', 'create', 'edit'].includes(value);
         },
       },
     },
     setup() {
       const postStore = usePostStore();
-      return { postStore };
+      const userStore = useUserStore();
+      return { postStore, userStore };
     },
     data() {
       return {
         form: { ...this.postStore.currentPost }, // 수정 시 currentPost즉시 변경x.
       }
     },
-  watch: {
-    'postStore.currentPost': {
-      deep: true, //객체 내부 속성 재귀적 감시
-      immediate: false, // 초기 값을 기반으로 watch 동작 실행
-      handler(newCurrentPost) {
-        this.form = { ...newCurrentPost }; // currentPost변경 시 반영.
+    created() {
+      if(this.mode === 'create'){
+        console.log(this.userStore.user);
+        this.form.author = this.userStore.user?.user_id;
+        this.form.author_nickname = this.userStore.user?.nickname;
+      }
+    },
+    watch: {
+      'postStore.currentPost': {
+        deep: true, //객체 내부 속성 재귀적 감시
+        immediate: false, // 초기 값을 기반으로 watch 동작 실행
+        handler(newCurrentPost) {
+          this.form = { ...newCurrentPost }; // currentPost변경 시 반영.
+        },
       },
     },
-  },
     methods: {
       handleSubmit() {
         if (this.mode === 'create') {
