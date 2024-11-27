@@ -1,10 +1,13 @@
 import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router';
 import { createPinia } from 'pinia';
+import router from './router';
 import axios from 'axios';
+import App from './App.vue'
 
 const app = createApp(App);
+
+// 디버깅 활성화
+app.config.devtools = true;
 
 // Axios 전역 기본 설정
 axios.defaults.baseURL = 'http://localhost:8081/'; // Spring Boot API의 기본 URL
@@ -14,6 +17,6 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 app.config.globalProperties.$axios = axios;
 
 app
-  .use(router)
   .use(createPinia())
+  .use(router)
   .mount('#app');
