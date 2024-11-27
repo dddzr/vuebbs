@@ -110,6 +110,18 @@ export const usePostStore = defineStore('post', {
         throw error;
       }
     },
+    async updatePost(post){
+      if (!post) return;
+      post.board_id = this.selectedBoard.id;
+      try {
+        const url = "/post/updatePost";
+        const response = await axios.post(url, post);
+        console.log(response);
+      } catch (error) {
+        console.error("error in updatePost: ", error);
+        throw error;
+      }
+    },
     async deletePost(post){
       if (!post) return;
       try {

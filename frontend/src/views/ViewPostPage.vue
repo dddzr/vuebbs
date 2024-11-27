@@ -7,6 +7,9 @@
   
       <div class="page-title-bar">
         <h1 v-if="mode === 'view'">게시글 상세</h1>
+        <button v-show="form?.author == userStore.user?.user_id" style="float: right; margin-right: 10px;" @click="goUpdate">
+          수정
+        </button>    
         <button style="float: right;" @click="goBack">
           목록
         </button>       
@@ -34,6 +37,7 @@
   
   <script>
   import { useUIStore } from '@/stores/uiStore';
+  import { useUserStore } from '@/stores/userStore';
   import { usePostStore } from '@/stores/postStore';
   import mainNavbar from '@/components/mainNavbar.vue';
   import loadingSpinner from '@/components/loadingSpinner.vue';
@@ -50,7 +54,8 @@
     setup() {
       const postStore = usePostStore();
       const uiStore = useUIStore();
-      return {postStore, uiStore};
+      const userStore = useUserStore();
+      return {postStore, uiStore, userStore};
     },
     props: {
       mode: {
@@ -68,22 +73,18 @@
     },
     async created() {
       const postId = this.$route.params.postId; // URL에서 postId 가져오기
-
-      // Store에 데이터가 없으면 서버에서 다시 가져오기
-      if (this.postStore.currentPost == null) {
-        console.log();
-        await this.postStore.fetchPostById(postId); // 새로고침 대응
-        console.log(this.postStore.currentPost);
-        this.form = this.postStore.currentPost;
-        this.form.view_count++;
-      } else {        
-        this.form = this.postStore.currentPost
-        this.form.view_count++;
-      }
+      await this.postStore.fetchPostById(postId); // 새로고침 대응
+      console.log(this.postStore.currentPost);
+      this.form = this.postStore.currentPost;
+      this.form.view_count++;
     },
     beforeRouteLeave(to, from, next) { //like unmounted
+      // 이동할 경로가 "CreatePostPage"이고 query에 "mode=edit"이 포함되어 있는 경우
+      if (to.name !== 'CreatePostPage' || to.query.mode !== 'edit') {
+        // 수정 페이지가 아닐 경우에만 currentPost를 null로 설정
         this.postStore.setCurrentPost(null);
-        next(); // 라우터 이동 허용
+      }
+      next(); // 라우터 이동 허용
     },
     methods: {
       handleLike() {
@@ -102,6 +103,12 @@
       },
       goBack() {
         this.$router.push("/");
+      },
+      goUpdate() {
+        this.$router.push({
+        name: "CreatePostPage",
+        query: { mode: "edit" },
+      });
       },
       handleDelete() {
         if(confirm("게시글을 삭제하시겠습니까?")){

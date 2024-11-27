@@ -105,9 +105,9 @@
     },
     methods: {
       handleSubmit() {
-        if (this.mode === 'create') {
+        if (this.mode === 'create' || this.mode === 'edit') {
           console.log('handleSubmit called');
-          this.$emit('createPost', this.form);
+          this.$emit('submitPost', this.form);
         }
       },
     },

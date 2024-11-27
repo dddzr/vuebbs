@@ -31,6 +31,10 @@ public class PostService {
         postMapper.insertPost(post);
     }
 
+    public void updatePost(Post post) {
+        postMapper.updatePost(post);
+    }
+
     public void deletePost(Post post) {
         postMapper.deletePost(post);
     }

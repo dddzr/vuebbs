@@ -35,6 +35,12 @@ public class PostController {
         return "insertPost success.";
     }
 
+    @PostMapping("/updatePost")
+    public String updatePost(@RequestBody Post post) {
+        postService.updatePost(post);
+        return "updatePost success.";
+    }
+
     @PostMapping("/deletePost")
     public String deletePost(@RequestBody Post post) {
         postService.deletePost(post);

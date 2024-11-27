@@ -11,6 +11,7 @@ public interface PostMapper {
     List<Post> selectPostList(Integer board_id);
     Post selectPostDetail(Integer post_id);
     void insertPost(Post post);
+    void updatePost(Post post);
     void deletePost(Post post);
     void updateLikeCount(@Param("post_id") Integer post_id, @Param("updateType") String updateType);
 }
