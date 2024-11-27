@@ -74,7 +74,6 @@
     async created() {
       const postId = this.$route.params.postId; // URL에서 postId 가져오기
       await this.postStore.fetchPostById(postId); // 새로고침 대응
-      console.log(this.postStore.currentPost);
       this.form = this.postStore.currentPost;
       this.form.view_count++;
     },

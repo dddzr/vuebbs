@@ -12,28 +12,37 @@
   </template>  
   
   <script>
+  import { onMounted } from 'vue';
+  import { useRouter } from 'vue-router';
   import { useUserStore } from '@/stores/userStore';
   export default {
   setup() {
     const userStore = useUserStore();
-    return {userStore};
+    const router = useRouter();
+
+    onMounted(() => {
+      if (typeof window !== 'undefined' && localStorage.getItem('loginId') !== null) {
+        userStore.isLoggedIn = true;
+      }
+    })
+
+    const goHome = () => {
+      router.push('/');
+    };
+    const goToLogin = () => {
+      router.push('/login');
+    };
+    const goToMyPage = () => {
+      router.push('/mypage');
+    };
+
+    return {
+      userStore,
+      goHome,
+      goToLogin,
+      goToMyPage
+    };
   },
-  mounted() {
-    if (typeof window !== 'undefined' && localStorage.getItem('loginId') !== null) {
-      this.userStore.isLoggedIn = true;
-    }
-  },
-    methods: {
-      goHome() {
-        this.$router.push('/');
-      },
-      goToLogin() {
-        this.$router.push('/login');
-      },
-      goToMyPage() {
-        this.$router.push('/mypage');
-      },
-    },
   };
   </script>
   

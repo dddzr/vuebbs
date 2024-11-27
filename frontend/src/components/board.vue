@@ -53,7 +53,7 @@
             <tbody>
             <tr v-for="post in postStore.paginatedPosts" :key="post.post_id">
                 <!-- <td>{{ post.category }}</td> -->
-                <td @click="goToVeiwPost(post)">{{ post.title }}</td>
+                <td @click="goToViewPost(post)">{{ post.title }}</td>
                 <td>{{ post.author_nickname }}</td>
                 <td>{{ post.created_at_formatted }}</td>
                 <td>{{ post.view_count }}</td>
@@ -74,21 +74,14 @@
             :hideFirstButton="false"
             :hideLastButton="false"
           />
-          <!--
-            pages	Number		Total number of pages
-            rangeSize	Number	1	Number of page around the current page
-            activeColor	String	#DCEDFF	Background color of the current page
-            hideFirstButton	Boolean	false	Hide the button to go to the first page
-            hideLastButton	Boolean	false	Hide the button to go to the last page  
-          -->
          </div>
         </div>
     </div>
 </template>
 
-
 <script>
-// import { storeToRefs } from 'pinia';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useUIStore } from '@/stores/uiStore';
 import { usePostStore } from '@/stores/postStore';
 import loadingSpinner from '@/components/loadingSpinner';
@@ -98,82 +91,83 @@ import '@/assets/styles/boardPage.css';
 
 export default {
   name: "BoardPage",
-  setup() {
-    const postStore = usePostStore();
-    const uiStore = useUIStore();
-    return {postStore, uiStore};
-  },
   components: {
     loadingSpinner,
     VPagination
   },
-  props: {
-    selectedBoard: Object
-  },
-  data() {
-    return {
-      currentPage: 1,
-      postsPerPage: 5,
-    };
-  },  
-  async mounted() {
-    this.uiStore.setIsLoading(true);
-      try {
-        await this.postStore.fetchPosts(this.postStore.selectedBoard);
-      } catch (error) {
-        console.error("error in Loading Post List: ", error);
-      } finally {
-        this.uiStore.setIsLoading(false);
-      }
-  },
-  methods: {
-    goToVeiwPost(post) {
-      /* 데이터 넘기는 방법.
-      1. emit (부모-자식간 데이터 전달)
-      this.$emit('goToVeiwPost', post);
-      - 읽기페이지를 부모자식 연결해야하고,
-      - 새로 고침시 사라진다.
-      
-      2.라우터 이용
-        this.$router.push({
-        name: "ViewPostPage",
-        params: { id: post.post_id },
-        query: { post: JSON.stringify(post), mode: "view" },
-      });
-      - query에 전달하는 데이터는 url 파라미터
-      - 새로 고침 시 유지 되지만 url 길어지고 데이터 노출
+  setup() {
+    const postStore = usePostStore();
+    const uiStore = useUIStore();
+    const router = useRouter();
+    
+    // data() 페이지 상태 변수
+    const currentPage = ref(1);
+    const postsPerPage = ref(5);
 
-      3. 스토어 이용    
-      
-      */
-      // 스토어에 게시글 상세 정보를 저장 TODO: 만약 게시글 정보 복잡해서 메인에서 다 안 들고 오면 이부분 생략.
-      this.postStore.setCurrentPost(post);
+    // mounted()
+    const fetchPosts = async () => {
+      uiStore.setIsLoading(true);
+      try {
+        await postStore.fetchPosts(postStore.selectedBoard);
+      } catch (error) {
+        console.error("Error in loading post list: ", error);
+      } finally {
+        uiStore.setIsLoading(false);
+      }
+    };
+
+    onMounted(() => {
+      fetchPosts();
+    });
+
+    //methods:
+    const goToViewPost = (post) => {
       // 상세페이지로 이동
-      this.$router.push({
+      router.push({
         name: "ViewPostPage",
         params: { postId: post.post_id },
         query: { mode: "view" },
       });
+    };
 
-    },
-    goToCreatePost() {
-      this.$router.push({
+
+    // 게시글 작성 페이지로 이동
+    const goToCreatePost = () => {
+      router.push({
         name: "CreatePostPage",
         query: { mode: "create" },
       });
-    },
-    navigateTo(menuItem) {
+    };
+
+    // 메뉴 항목을 이동
+    const navigateTo = (menuItem) => {
       if (menuItem.path) {
-        this.$router.push(menuItem.path);
+        router.push(menuItem.path);
       }
-    },
-    applyFilter() {
-      this.postStore.setfilteredPosts();
-    },
-    changePage(page) {
-      this.postStore.setCurrentPage(page);
-    },
-  },
+    };
+
+    // 필터 적용
+    const applyFilter = () => {
+      postStore.setFilteredPosts();
+    };
+
+    // 페이지 변경
+    const changePage = (page) => {
+      postStore.setCurrentPage(page);
+    };
+
+    return {
+      postStore,
+      uiStore,
+      currentPage,
+      postsPerPage,
+      goToViewPost,
+      goToCreatePost,
+      navigateTo,
+      applyFilter,
+      changePage,
+    };
+  }
 };
 </script>
 
