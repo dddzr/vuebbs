@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import BoardPage from '@/views/BoardPage.vue'
-// import PostDetailPage from '@/views/PostDetailPage.vue'
 import ViewPostPage from '@/views/ViewPostPage.vue'
 import CreatePostPage from '@/views/CreatePostPage.vue'
 import LoginPage from '@/views/LoginPage.vue'
 import SignUpPage from '@/views/SignUpPage.vue'
+import MyPage from '@/views/MyPage.vue'
 
 const routes = [
   {
@@ -38,6 +38,14 @@ const routes = [
     props: route => ({
       id: route.params.id,
       mode: route.query.mode,
+    }),
+  },
+  {
+    path: '/mypage',
+    name: 'MyPage',
+    component: MyPage,
+    props: route => ({
+      username: route.params.username
     }),
   },
 ]

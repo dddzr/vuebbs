@@ -65,7 +65,7 @@
 </template>
   
 <script setup>
-  import { reactive, watch, onMounted, defineEmits } from 'vue';
+  import { reactive, watchEffect, onMounted, defineEmits } from 'vue';
   import { useUserStore } from '@/stores/userStore';
   import { usePostStore } from '@/stores/postStore';
   const emit = defineEmits(['submitPost']); 
@@ -93,10 +93,11 @@
   });
 
   // watch 사용 - currentPost가 변경될 때마다 form을 갱신
-  watch(
+  watchEffect(
     () => postStore.currentPost,
     (newCurrentPost) => {
       form = reactive({ ...newCurrentPost }); // currentPost 변경 시 form에 반영
+      console.log("test")
     },
     { deep: true } // 객체 내부 속성도 재귀적으로 감시
   );

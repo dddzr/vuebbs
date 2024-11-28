@@ -8,9 +8,6 @@
       <div class="page-title-bar">
         <h1 v-if="postStore.mode === 'create'">게시글 작성</h1>
         <h1 v-if="postStore.mode === 'edit'">게시글 수정</h1>
-        <button style="float: right;" @click="goBack">
-          목록
-        </button>
       </div>    
   
       <div class="post-info">
@@ -20,7 +17,8 @@
   </template>
   
   <script setup>
-  import { useRouter } from 'vue-router';
+  import { onMounted } from 'vue';
+  import { useRouter, useRoute } from 'vue-router';
   import { useUIStore } from '@/stores/uiStore';
   import { usePostStore } from '@/stores/postStore';
   import mainNavbar from '@/components/mainNavbar.vue';
@@ -31,10 +29,15 @@
   const postStore = usePostStore();
   const uiStore = useUIStore();  
   const router = useRouter();
+  const route = useRoute();
+
+  onMounted(() => {    
+    postStore.setMode(route.query.mode);
+  });
 
   const handleSubmit = async(formData) => {
-    console.log(this.mode);
-    if(this.mode == "create"){
+    console.log(postStore.mode);
+    if(postStore.mode == "create"){
       uiStore.setIsLoading(true);
       try {
         await postStore.insertPost(formData);
@@ -46,7 +49,7 @@
       } finally {
         uiStore.setIsLoading(false);
       }
-    } else if(this.mode == "edit") {
+    } else if(postStore.mode == "edit") {
       uiStore.setIsLoading(true);
       try {
         await postStore.updatePost(formData);
@@ -63,9 +66,5 @@
         uiStore.setIsLoading(false);
       }
     }
-  };
-
-  const goBack = () => {
-    router.push("/");
   };
 </script>

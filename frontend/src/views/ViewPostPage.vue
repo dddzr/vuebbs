@@ -36,7 +36,7 @@
 </template>
   
 <script setup>
-  import { ref, reactive, onMounted } from 'vue';  
+  import { ref, onMounted } from 'vue';  
   // ref: int, Stirng (.value로 접근)
   // reactive: 배열, 객체
   import { useRouter, useRoute } from 'vue-router';
@@ -55,15 +55,17 @@
   const router = useRouter(); // 라우터 인스턴스(라우팅 관련 동작을 수행)
   const route = useRoute(); //현재 라우트(활성화된 URL에 대한 세부 정보)
 
-  let form = reactive({ ...postStore.currentPost }); // 수정 시 currentPost즉시 변경x.
+  let form = postStore.currentPost;
   let isLikeDisabled = ref(false);
   let showHeart = ref(false);
 
-  onMounted(async () => {    
+  onMounted(async () => {
     const postId = route.params.postId;
-      await postStore.fetchPostById(postId);
-      form = postStore.currentPost;
-      form.view_count++;
+    const mode = route.query.mode;
+    postStore.setMode(mode);
+    await postStore.fetchPostById(postId);
+    form = postStore.currentPost;
+    form.view_count++;
   });
 
   onBeforeRouteLeave((to, from, next) => {
@@ -80,7 +82,7 @@
     }
     isLikeDisabled.value = true;
 
-    // this.postStore.increaseLikeCount(this.form); // TODO: DB연동, 사용자 별 1회만 누르도록/좋아요 취소
+    // postStore.increaseLikeCount(this.form); // TODO: DB연동, 사용자 별 1회만 누르도록/좋아요 취소
     form.like_count++;
     showHeart.value = true;
     setTimeout(() => {
@@ -93,7 +95,7 @@
   };
 
   const goUpdate = () => {
-      this.postStore.setMode("edit");
+      postStore.setMode("edit");
       router.push({
       name: "CreatePostPage",
       query: { mode: "edit" },
@@ -102,7 +104,7 @@
 
   const handleDelete = () => {
     if(confirm("게시글을 삭제하시겠습니까?")){
-      this.postStore.deletePost(this.form);
+      postStore.deletePost(this.form);
       router.push("/");
     }        
   };

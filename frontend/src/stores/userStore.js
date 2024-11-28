@@ -9,6 +9,12 @@ export const useUserStore = defineStore('user', {
     isAvailable: { // 회원가입 중복 체크 상태
       username: false,
       email: false
+    },
+    userActivity: {
+      like: [],
+      posted: [],
+      comment: [],
+      view: [],
     }
   }),
   actions: {
@@ -76,5 +82,20 @@ export const useUserStore = defineStore('user', {
         throw error;
       }
     },
+    async fetchUserActivity(activityType) {
+      let url = '';
+      try {
+        if(activityType == 'posted') {
+          url = '/post/getPostsByUsername/' + this.user.username;
+        }else {
+          url = '/user/getUserActivityRecords/' + this.user.username + activityType;
+        }
+        const response = await axios.get(url);
+        // 상태 업데이트
+        this.userActivity[activityType] = response.data;
+      } catch (error) {
+        console.error('Error fetching user activity data:', error);
+      }
+    }
   }
 });

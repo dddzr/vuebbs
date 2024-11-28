@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { reactive } from 'vue';
 import axios from 'axios';
 
 export const usePostStore = defineStore('post', {
@@ -14,7 +15,7 @@ export const usePostStore = defineStore('post', {
     postsPerPage: 5,
     /* 현재 게시글 */
     mode: null, // view, create, edit
-    currentPost: null,
+    currentPost:  reactive({}),
   }),
   actions: {
     setPosts(posts) {
