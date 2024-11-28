@@ -32,7 +32,10 @@
     router.push('/login');
   };
   const goToMyPage = () => {
-    router.push('/mypage');
+    router.push({
+    name: "MyPage",
+    params: { username: userStore.user.username }
+  });
   };
 </script>
   

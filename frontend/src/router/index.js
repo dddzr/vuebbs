@@ -41,7 +41,7 @@ const routes = [
     }),
   },
   {
-    path: '/mypage',
+    path: '/mypage/:username',
     name: 'MyPage',
     component: MyPage,
     props: route => ({

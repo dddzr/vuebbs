@@ -88,7 +88,7 @@ export const useUserStore = defineStore('user', {
         if(activityType == 'posted') {
           url = '/post/getPostsByUsername/' + this.user.username;
         }else {
-          url = '/user/getUserActivityRecords/' + this.user.username + activityType;
+          url = '/user/getUserActivityRecords/' + this.user.username + '/' + activityType;
         }
         const response = await axios.get(url);
         // 상태 업데이트

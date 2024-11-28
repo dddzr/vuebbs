@@ -11,9 +11,9 @@
         <div class="bottom-section">
             <div class="grid-layout">                
                 <!-- 내 게시글 -->
-                <div class="grid-item">
+                <!-- <div class="grid-item">
                     <UserActivitySwiper :activity_type="'posted'" @viewMore="handleViewMore('posted')"/>
-                </div>
+                </div> -->
                 <!-- 댓글 단 게시글 -->
                 <div class="grid-item">
                     <UserActivitySwiper :activity_type="'comment'" @viewMore="handleViewMore('comment')"/>
