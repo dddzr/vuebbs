@@ -22,7 +22,7 @@
           <select v-model="postStore.searchType">
               <option value="title">제목</option>
               <option value="author_nickname">작성자</option>
-              <option value="contents">내용</option>
+              <option value="content">내용</option>
           </select>
           </div>
           <button @click="applyFilter()">검색</button>

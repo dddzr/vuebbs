@@ -39,8 +39,9 @@ export const usePostStore = defineStore('post', {
     setCurrentPost(post) {
       this.currentPost = post;      
     },
-    setfilteredPosts() {
+    setFilteredPosts() {
       this.filteredPosts = this.posts.filter((post) => {
+        if(!post[this.searchType]) return false
         return post[this.searchType].includes(this.filterKeyword);
       });
     },     

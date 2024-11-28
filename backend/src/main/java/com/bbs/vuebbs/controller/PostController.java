@@ -17,7 +17,7 @@ public class PostController {
 
     @GetMapping("/selectPostList/{board_id}")
     public List<Post> selectPostList(@PathVariable Integer board_id) {       
-        // 얘는 불필요한 정보(내용검색 안 하려면 내용, 추후 댓글 등) 안 들고 오게 수정이 필요. 
+        // 필요한 정보만 들고오자.
         List<Post> data = postService.selectPostList(board_id);
         return data;
     }
