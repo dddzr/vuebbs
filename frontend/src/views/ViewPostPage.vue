@@ -13,8 +13,8 @@
       <button style="float: right;" @click="goBack">
         목록
       </button>       
-      <button style="float: right; margin-left: 10px;" @click="handleDelete">
-        삭제<!-- TODO: v-if 작성자 = 사용자 로직 추가 필요 -->
+      <button v-show="form?.author == userStore.user?.user_id" style="float: right; margin-left: 10px;" @click="handleDelete">
+        삭제
       </button>
     </div>    
 
@@ -66,9 +66,8 @@
       form.view_count++;
   });
 
-  onBeforeRouteLeave((to, from, next) => { //like unmounted
+  onBeforeRouteLeave((to, from, next) => {
     if (to.name !== 'CreatePostPage' || to.query.mode !== 'edit') {
-      // 수정 페이지가 아닐 경우에만 currentPost를 null로 설정
       postStore.setCurrentPost(null);
     }
     next();

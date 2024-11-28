@@ -4,9 +4,9 @@ import axios from 'axios';
 export const useUserStore = defineStore('user', {
   state: () => ({
     isLoggedIn: localStorage.getItem('token') ? true : false, // 로그인 상태
-    user: JSON.parse(localStorage.getItem('user')) ?? null,             // 로그인된 사용자 정보 {}
-    token: localStorage.getItem('token') ?? null,            // 인증 토큰
-    isAvailable: {
+    user: JSON.parse(localStorage.getItem('user')) ?? null,   // 로그인된 사용자 정보 {}
+    token: localStorage.getItem('token') ?? null,             // 인증 토큰
+    isAvailable: { // 회원가입 중복 체크 상태
       username: false,
       email: false
     }
@@ -17,7 +17,6 @@ export const useUserStore = defineStore('user', {
         const response = await axios.post('/auth/login', request);
         const { token, user } = response.data;
 
-        // 로그인 성공 시
         this.token = token;
         this.user = user;
         this.isLoggedIn = true;
@@ -64,14 +63,13 @@ export const useUserStore = defineStore('user', {
           type: type,
           value: value,
         };
-        const response = await axios.post(url, data);              
-        // 중복 검사 결과에 따른 알림
+        const response = await axios.post(url, data);      
         if (response.data?.available) {
           this.isAvailable[type] = true;
-          alert(response.data?.message);  // 중복되지 않은 경우
+          alert(response.data?.message);
         } else {
           this.isAvailable[type] = false;
-          alert(response.data?.message);  // 중복된 경우
+          alert(response.data?.message);
         }
       } catch (error) {
         console.error("error in checkDuplication: ", error);
