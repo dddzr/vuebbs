@@ -85,8 +85,8 @@
   onMounted(() => {
     console.log(postStore.currentPost);
     if (postStore.mode === 'create') {
-      form.value.author = userStore.user?.user_id;
-      form.value.author_nickname = userStore.user?.nickname;
+      form.author = userStore.user?.user_id;
+      form.author_nickname = userStore.user?.nickname;
     } else {
       form = reactive({ ...postStore.currentPost });
     }
