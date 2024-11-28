@@ -4,15 +4,15 @@ import axios from 'axios';
 export const usePostStore = defineStore('post', {
   state: () => ({
     selectedBoard: { id: 1, label: "공지사항" }, // 선택된 게시판 default
-    posts: [],           // 게시글 목록    
-    //필터
+    posts: [],                                  // 게시글 목록    
+    /* 필터 */
     filteredPosts: [],
     searchType: "title",
     filterKeyword: "",
-    //페이지
+    /* 페이지 */
     currentPage: 1,
     postsPerPage: 5,
-    //현재 게시글
+    /* 현재 게시글 */
     mode: null, // view, create, edit
     currentPost: null,
   }),
@@ -27,7 +27,13 @@ export const usePostStore = defineStore('post', {
       this.currentPage = page;
     },
     setMode(mode) {
-      this.mode = mode;      
+      const allowedModes = ['view', 'create', 'edit'];
+
+      if (!allowedModes.includes(mode)) {
+          throw new Error(`Invalid mode: ${mode}. Allowed modes are: ${allowedModes.join(', ')}`);
+      }
+
+      this.mode = mode;  
     },
     setCurrentPost(post) {
       this.currentPost = post;      
