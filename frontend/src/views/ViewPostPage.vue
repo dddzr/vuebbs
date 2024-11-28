@@ -23,13 +23,16 @@
       <div class="views">
         👀 조회수: {{ form?.view_count || 0 }}
       </div>
-      <div @click="handleLike" class="likes">
-        ❤️ 좋아요: {{ form?.like_count || 0 }}
+      <div @click="handleLike" class="likes" style="display: contents;">
+        <div v-show="!isLikedPost">❤️</div><div v-show="isLikedPost">🩶</div> 좋아요: {{ form?.like_count || 0 }}
       </div>
+      
     </div>
     <!-- 좋아요 애니메이션 -->
     <div v-if="showHeart" class="like-animation">
-      ❤️
+      <span :class="isLikedPost ? 'unliked' : 'liked'">
+          ❤️
+      </span>
     </div>
 
   </div>
@@ -56,14 +59,17 @@
   const route = useRoute(); //현재 라우트(활성화된 URL에 대한 세부 정보)
 
   let form = postStore.currentPost;
-  let isLikeDisabled = ref(false);
   let showHeart = ref(false);
+  let isLikedPost = ref(false);
 
   onMounted(async () => {
     const postId = route.params.postId;
     const mode = route.query.mode;
     postStore.setMode(mode);
-    await postStore.fetchPostById(postId);
+    await postStore.fetchPostById(postId);    
+    if(userStore.isLoggedIn){
+      isLikedPost.value = await userStore.checkLikedPost(postId);
+    }
     form = postStore.currentPost;
     form.view_count++;
   });
@@ -76,14 +82,21 @@
   });
 
   const handleLike = () => {
-    if (isLikeDisabled.value) {
-      alert("이미 좋아요 한 글입니다.");
+    if (isLikedPost.value) {
+      alert("이미 좋아요 한 글입니다. TODO: unLike");
       return;
     }
-    isLikeDisabled.value = true;
-
-    // postStore.increaseLikeCount(this.form); // TODO: DB연동, 사용자 별 1회만 누르도록/좋아요 취소
-    form.like_count++;
+    if(!userStore.isLoggedIn){
+      alert("로그인 후에 이용해주세요.");
+      return;
+    }
+    isLikedPost.value = true;
+    try{
+      postStore.increaseLikeCount(form, userStore.user.user_id); // TODO: DB연동, 사용자 별 1회만 누르도록/좋아요 취소
+      form.like_count++;
+    }catch{
+      alert("좋아요 실패.");
+    }    
     showHeart.value = true;
     setTimeout(() => {
       showHeart.value = false;
@@ -104,7 +117,7 @@
 
   const handleDelete = () => {
     if(confirm("게시글을 삭제하시겠습니까?")){
-      postStore.deletePost(this.form);
+      postStore.deletePost(form);
       router.push("/");
     }        
   };

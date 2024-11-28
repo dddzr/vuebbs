@@ -40,6 +40,6 @@
                 <when test="updateType == 'decrease'">-1</when>
                 <otherwise>0</otherwise>
             </choose>
-        WHERE id = #{post_id};
+        WHERE post_id = #{post_id};
     </update>
 </mapper>

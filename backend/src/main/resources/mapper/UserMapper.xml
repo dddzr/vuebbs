@@ -31,4 +31,37 @@
         INSERT INTO user (username, email, nickname, password, profile_picture) 
         VALUES (#{username}, #{email}, #{nickname}, #{password}, #{profile_picture})
     </insert>
+
+    <select id="getUserActivityRecords">
+        SELECT p.post_id, p.title
+        FROM post p
+        JOIN user_activity ua ON p.post_id = ua.post_id
+        WHERE ua.user_id = (
+            SELECT u.user_id
+            FROM `user` u
+            WHERE u.username = #{username}
+        ) AND ua.activity_type = #{activity_type};
+    </select>
+
+    <select id="checkLikedPost">
+        SELECT COUNT(*)
+        FROM post p
+        JOIN user_activity ua ON p.post_id = ua.post_id
+        WHERE ua.user_id = (
+            SELECT u.user_id
+            FROM `user` u
+            WHERE u.username = #{username}
+        ) AND ua.activity_type = 'like'
+        AND ua.post_id = #{post_id};
+    </select>
+
+    <insert id="insertUserActivity">
+        INSERT INTO user_activity (user_id, post_id, activity_type) 
+        VALUES (#{user_id}, #{post_id}, #{activity_type});
+    </insert>
+
+    <delete id="deleteUserActivity">
+        DELETE FROM user_activity
+        WHERE user_id = #{user_id} AND post_id = #{post_id} AND activity_type = #{activity_type};
+    </delete>
 </mapper>

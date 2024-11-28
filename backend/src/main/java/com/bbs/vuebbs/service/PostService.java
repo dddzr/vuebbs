@@ -44,7 +44,7 @@ public class PostService {
         // 좋아요 수 증가
         postMapper.updateLikeCount(post_id, "increase");        
         // 사용자 활동 기록 (userService 호출)
-        userService.recordUserActivity(user_id, post_id, "like");
+        userService.insertUserActivity(user_id, post_id, "like");
     }
 
     @Transactional
@@ -52,7 +52,7 @@ public class PostService {
         // 좋아요 수 감소
         postMapper.updateLikeCount(post_id, "decrease");        
         // 사용자 활동 기록 (userService 호출)
-        userService.recordUserActivity(user_id, post_id, "like");
+        userService.deleteUserActivity(user_id, post_id, "like");
     }
 
 

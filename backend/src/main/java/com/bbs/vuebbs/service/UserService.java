@@ -1,8 +1,10 @@
 package com.bbs.vuebbs.service;
 
 import com.bbs.vuebbs.mapper.UserMapper;
+import com.bbs.vuebbs.model.Post;
 import com.bbs.vuebbs.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +38,35 @@ public class UserService {
     }
 
     @Transactional
-    public void recordUserActivity(Integer user_id, Integer post_id, String activity_type) {
+    public void insertUserActivity(Integer user_id, Integer post_id, String activity_type) {
         User userActivity = new User();
         userActivity.setUser_id(user_id);
         userActivity.setPost_id(post_id);
         userActivity.setActivity_type(activity_type);
 
-        userMapper.recordUserActivity(userActivity);
+        userMapper.insertUserActivity(userActivity);
+    }
+
+    @Transactional
+    public void deleteUserActivity(Integer user_id, Integer post_id, String activity_type) {
+        User userActivity = new User();
+        userActivity.setUser_id(user_id);
+        userActivity.setPost_id(post_id);
+        userActivity.setActivity_type(activity_type);
+
+        userMapper.deleteUserActivity(userActivity);
+    }
+
+    public List<Post> getUserActivityRecords(String username, String activity_type) {
+        return userMapper.getUserActivityRecords(username, activity_type);
+    }
+
+    public boolean checkLikedPost(String post_id, String username) {
+        int count = userMapper.checkLikedPost(post_id, username);
+
+        if (count > 0) {
+            return true;
+        }
+        return false;
     }
 }

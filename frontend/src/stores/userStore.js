@@ -96,6 +96,16 @@ export const useUserStore = defineStore('user', {
       } catch (error) {
         console.error('Error fetching user activity data:', error);
       }
-    }
+    },    
+    async checkLikedPost(post_id){
+      if(!this.user?.username && !post_id) return;
+      try {
+        let url = '/user/checkLikedPost/' + post_id + "/" + this.user.username;
+        const response = await axios.get(url);
+        return response.data?.isLiked;
+      } catch (error) {
+        console.error('Error fetching user activity data:', error);
+      }
+    },
   }
 });

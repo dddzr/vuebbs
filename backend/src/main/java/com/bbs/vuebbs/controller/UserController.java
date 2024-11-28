@@ -1,9 +1,12 @@
 package com.bbs.vuebbs.controller;
 
+import com.bbs.vuebbs.model.Post;
 import com.bbs.vuebbs.model.User;
 import com.bbs.vuebbs.service.UserService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -37,5 +40,19 @@ public class UserController {
             //클라이언트가 409를 일반적인 "에러"로 해석하여 알림 없이 실패로 처리하거나, 추가적인 디버깅 작업이 필요
             //return ResponseEntity.status(HttpStatus.CONFLICT).body(response); // 상태 코드 409 Conflict
         }
+    }
+
+    @GetMapping("/getUserActivityRecords/{username}/{activity_type}")
+    public List<Post> getUserActivityRecords(@PathVariable String username, @PathVariable String activity_type) {  
+        List<Post> data = userService.getUserActivityRecords(username, activity_type);
+        return data;
+    }
+
+    @GetMapping("/checkLikedPost/{post_id}/{username}")
+    public ResponseEntity<Map<String, Object>> checkLikedPost(@PathVariable String post_id, @PathVariable String username) {  
+        Map<String, Object> response = new HashMap<>();
+        boolean isLiked = userService.checkLikedPost(post_id, username);
+        response.put("isLiked", isLiked);
+        return ResponseEntity.ok(response);
     }
 }

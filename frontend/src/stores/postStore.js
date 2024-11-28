@@ -73,11 +73,11 @@ export const usePostStore = defineStore('post', {
       }
       this.initFilter();
     }, 
-    async increaseLikeCount(post){
+    async increaseLikeCount(post, user_id){
       if (!post) return;
       try {
         const url = "/post/increaseLikeCount";
-        const response = await axios.post(url, post.post_id);
+        const response = await axios.post(url, null, {params: {post_id: post.post_id, user_id: user_id}});
         console.log(response);
       } catch (error) {
         console.error("error in increaseLikeCount: ", error);
