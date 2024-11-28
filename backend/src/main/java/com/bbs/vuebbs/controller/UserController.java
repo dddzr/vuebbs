@@ -32,7 +32,10 @@ public class UserController {
         } else {
             response.put("message", "중복된 데이터가 존재합니다.");
             response.put("available", false);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response); // 상태 코드 409 Conflict
+            return ResponseEntity.ok(response); // 상태 코드 200 OK
+
+            //클라이언트가 409를 일반적인 "에러"로 해석하여 알림 없이 실패로 처리하거나, 추가적인 디버깅 작업이 필요
+            //return ResponseEntity.status(HttpStatus.CONFLICT).body(response); // 상태 코드 409 Conflict
         }
     }
 }

@@ -74,7 +74,7 @@ export const useUserStore = defineStore('user', {
           alert(response.data?.message);  // 중복된 경우
         }
       } catch (error) {
-        console.error("error in insertPost: ", error);
+        console.error("error in checkDuplication: ", error);
         throw error;
       }
     },
