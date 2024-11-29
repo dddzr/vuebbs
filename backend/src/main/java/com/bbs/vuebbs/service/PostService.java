@@ -2,6 +2,7 @@ package com.bbs.vuebbs.service;
 
 import com.bbs.vuebbs.mapper.PostMapper;
 import com.bbs.vuebbs.service.UserService;
+import com.bbs.vuebbs.model.Comment;
 import com.bbs.vuebbs.model.Post;
 
 import java.util.List;
@@ -37,6 +38,22 @@ public class PostService {
 
     public void deletePost(Post post) {
         postMapper.deletePost(post);
+    }
+    
+    public List<Comment> selectComments(Integer post_id) {
+        return postMapper.selectComments(post_id);
+    }
+
+    public void insertComment(Comment comment) {
+        postMapper.insertComment(comment);
+    }
+
+    public void updateComment(Comment comment) {
+        postMapper.updateComment(comment);
+    }
+
+    public void deleteComment(Comment comment) {
+        postMapper.deleteComment(comment);
     }
 
     @Transactional

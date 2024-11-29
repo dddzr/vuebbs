@@ -7,18 +7,18 @@
 
     <div class="page-title-bar">
       <h1 v-if="postStore.mode === 'view'">게시글 상세</h1>
-      <button v-show="form?.author == userStore.user?.user_id" style="float: right; margin-right: 10px;" @click="goUpdate">
+      <button v-show="form?.user_id == userStore.user?.user_id" style="float: right; margin-right: 10px;" @click="goUpdate">
         수정
       </button>    
       <button style="float: right;" @click="goBack">
         목록
       </button>       
-      <button v-show="form?.author == userStore.user?.user_id" style="float: right; margin-left: 10px;" @click="handleDelete">
+      <button v-show="form?.user_id == userStore.user?.user_id" style="float: right; margin-left: 10px;" @click="handleDelete">
         삭제
       </button>
     </div>    
 
-    <postForm/>
+    <postForm v-if="postDataReady"/>
     <div class="reaction-container" v-if="postStore.mode === 'view'">
       <div class="views">
         👀 조회수: {{ form?.view_count || 0 }}
@@ -35,7 +35,7 @@
       </span>
     </div>
 
-    <postComment/>
+    <postComment v-if="postDataReady"/>
   </div>
 </template>
   
@@ -63,19 +63,20 @@
   let form = postStore.currentPost;
   let showHeart = ref(false);
   let isLikedPost = ref(false);
+  let postDataReady = ref(false);
 
   onMounted(async () => {
     const postId = route.params.postId;
     const mode = route.query.mode;
     postStore.setMode(mode);
-    await postStore.fetchPostById(postId);    
+    await postStore.fetchPostById(postId);
+    postDataReady.value = true; //게시글을 가져온 다음 댓글컴포넌트 로드
     if(userStore.isLoggedIn){
       isLikedPost.value = await userStore.checkLikedPost(postId);
     }
     form = postStore.currentPost;
     form.view_count++;
   });
-
   onBeforeRouteLeave((to, from, next) => {
     if (to.name !== 'CreatePostPage' || to.query.mode !== 'edit') {
       postStore.setCurrentPost(null);

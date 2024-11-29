@@ -4,20 +4,22 @@
 
 <mapper namespace="com.bbs.vuebbs.mapper.PostMapper">
     <select id="selectPostList" resultType="com.bbs.vuebbs.model.Post">
-        SELECT p.*, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted, u.nickname as author_nickname
+        SELECT p.*, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted, u.nickname as user_nickname
         FROM post p
-        LEFT JOIN user u ON p.author = u.user_id
+        LEFT JOIN user u ON p.user_id = u.user_id
         WHERE p.board_id = #{board_id};
     </select>
+
+    <!-- 게시글 -->
     <select id="selectPostDetail" resultType="com.bbs.vuebbs.model.Post">
-        SELECT p.*, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted, u.nickname as author_nickname
+        SELECT p.*, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted, u.nickname as user_nickname
         FROM post p
-        LEFT JOIN user u ON p.author = u.user_id
+        LEFT JOIN user u ON p.user_id = u.user_id
         WHERE p.post_id = #{post_id};
     </select>
     <insert id="insertPost">
-        INSERT INTO post (title, author, content, board_id, created_at, updated_at)
-        VALUES (#{title}, #{author}, #{content}, #{board_id}, NOW(), NOW());
+        INSERT INTO post (title, user_id, content, board_id, created_at, updated_at)
+        VALUES (#{title}, #{user_id}, #{content}, #{board_id}, NOW(), NOW());
     </insert>
     <update id="updatePost">
         UPDATE post
@@ -32,6 +34,30 @@
         DELETE FROM post
         WHERE post_id = #{post_id};
     </delete>
+
+    <!-- 댓글 -->
+    <select id="selectComments" resultType="com.bbs.vuebbs.model.Comment">
+        SELECT c.*, TO_CHAR(c.created_at, 'YYYY-MM-DD') AS created_at_formatted, u.nickname as user_nickname
+        FROM comment c
+        LEFT JOIN user u ON c.user_id = u.user_id
+        WHERE c.post_id = #{post_id};
+    </select>
+    <insert id="insertComment">
+        INSERT INTO comment (post_id, user_id, content, created_at, updated_at, parent_comment_id)
+        VALUES (#{post_id}, #{user_id}, #{content}, NOW(), NOW(), #{parent_comment_id});
+    </insert>
+    <update id="updateComment">
+        UPDATE comment
+        SET content = #{content},
+            updated_at = NOW()
+        WHERE comment_id = #{comment_id};
+    </update>
+    <delete id="deleteComment">
+        DELETE FROM comment
+        WHERE comment_id = #{comment_id};
+    </delete>
+
+    <!-- 게시글 추가 기능 -->
     <update id="updateLikeCount">
         UPDATE post
         SET like_count = like_count + 

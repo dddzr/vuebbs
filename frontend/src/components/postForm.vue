@@ -22,20 +22,20 @@
           />
         </div>
         <div class="post-info-input-container">
-          <label for="author_nickname">작성자</label>
+          <label for="user_nickname">작성자</label>
           <input
-            id="author_nickname"
+            id="user_nickname"
             type="text"
-            v-model="form.author_nickname"
+            v-model="form.user_nickname"
             :disabled=true
           />
         </div>
         <div class="post-info-input-container" v-show="false">
-          <label for="author">작성자 아이디</label>
+          <label for="user_id">작성자 아이디</label>
           <input
-            id="author"
+            id="user_id"
             type="text"
-            v-model="form.author"
+            v-model="form.user_id"
             :disabled=true
           />
         </div>
@@ -83,10 +83,9 @@
 
   /// created와 비슷하게, onMounted 사용
   onMounted(() => {
-    console.log(postStore.currentPost);
     if (postStore.mode === 'create') {
-      form.author = userStore.user?.user_id;
-      form.author_nickname = userStore.user?.nickname;
+      form.user_id = userStore.user?.user_id;
+      form.user_nickname = userStore.user?.nickname;
     } else {
       form = reactive({ ...postStore.currentPost });
     }

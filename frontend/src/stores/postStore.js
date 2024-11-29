@@ -62,6 +62,7 @@ export const usePostStore = defineStore('post', {
       this.filterKeyword = "";
       this.filteredPosts = this.posts;
     },
+    /* 게시글 */
     async fetchPostById(postId) { 
       if (!postId) return;
       try {
@@ -74,6 +75,66 @@ export const usePostStore = defineStore('post', {
       }
       this.initFilter();
     }, 
+    async insertPost(post){
+      if (!post) return;
+      post.board_id = this.selectedBoard.id;
+      try {
+        const url = "/post/insertPost";
+        const response = await axios.post(url, post);
+        console.log(response);
+      } catch (error) {
+        console.error("error in insertPost: ", error);
+        throw error;
+      }
+    },
+    async updatePost(post){
+      if (!post) return;
+      post.board_id = this.selectedBoard.id;
+      try {
+        const url = "/post/updatePost";
+        const response = await axios.post(url, post);
+        console.log(response);
+      } catch (error) {
+        console.error("error in updatePost: ", error);
+        throw error;
+      }
+    },
+    async deletePost(post){
+      if (!post) return;
+      try {
+        const url = "/post/deletePost";
+        const response = await axios.post(url, post);
+        console.log(response);
+      } catch (error) {
+        console.error("error in deletePost: ", error);
+        throw error;
+      }
+    },
+    /* 댓글 */
+    async fetchComments() { 
+      if (!this.currentPost) return;
+      try {
+        const url = "/post/selectComments/"+ this.currentPost.post_id;
+        const response = await axios.get(url);
+        return response.data;
+      } catch (error) {
+        console.error("error in fetchComments: ", error);
+        throw error;
+      }
+    }, 
+    async insertComment(comment){
+      if (!this.currentPost) return;
+      comment.post_id = this.currentPost.post_id;
+      try {
+        const url = "/post/insertComment";
+        const response = await axios.post(url, comment);
+        console.log(response);
+      } catch (error) {
+        console.error("error in insertComment: ", error);
+        throw error;
+      }
+    },
+    /* 게시글 추가 기능 */
     async increaseLikeCount(post, user_id){
       if (!post) return;
       try {
@@ -109,41 +170,6 @@ export const usePostStore = defineStore('post', {
         }
       }
     },
-    async insertPost(post){
-      if (!post) return;
-      post.board_id = this.selectedBoard.id;
-      try {
-        const url = "/post/insertPost";
-        const response = await axios.post(url, post);
-        console.log(response);
-      } catch (error) {
-        console.error("error in insertPost: ", error);
-        throw error;
-      }
-    },
-    async updatePost(post){
-      if (!post) return;
-      post.board_id = this.selectedBoard.id;
-      try {
-        const url = "/post/updatePost";
-        const response = await axios.post(url, post);
-        console.log(response);
-      } catch (error) {
-        console.error("error in updatePost: ", error);
-        throw error;
-      }
-    },
-    async deletePost(post){
-      if (!post) return;
-      try {
-        const url = "/post/deletePost";
-        const response = await axios.post(url, post);
-        console.log(response);
-      } catch (error) {
-        console.error("error in deletePost: ", error);
-        throw error;
-      }
-    }
   },
   getters: { //상태 변경 감지 (watch 같은 것)
     paginatedPosts(state) {

@@ -21,7 +21,7 @@
           <div class="filter-options">
           <select v-model="postStore.searchType">
               <option value="title">제목</option>
-              <option value="author_nickname">작성자</option>
+              <option value="user_nickname">작성자</option>
               <option value="content">내용</option>
           </select>
           </div>
@@ -54,7 +54,7 @@
           <tr v-for="post in postStore.paginatedPosts" :key="post.post_id">
               <!-- <td>{{ post.category }}</td> -->
               <td @click="goToViewPost(post)">{{ post.title }}</td>
-              <td>{{ post.author_nickname }}</td>
+              <td>{{ post.user_nickname }}</td>
               <td>{{ post.created_at_formatted }}</td>
               <td>{{ post.view_count }}</td>
               <td>{{ post.like_count }}</td>

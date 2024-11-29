@@ -1,5 +1,6 @@
 package com.bbs.vuebbs.controller;
 
+import com.bbs.vuebbs.model.Comment;
 import com.bbs.vuebbs.model.Post;
 import com.bbs.vuebbs.service.PostService;
 
@@ -23,8 +24,7 @@ public class PostController {
     }
 
     @GetMapping("/selectPostDetail/{post_id}")
-    public Post selectPostDetail(@PathVariable Integer post_id) {      
-        // 댓글 조인해서 가져오게 수정 필요  
+    public Post selectPostDetail(@PathVariable Integer post_id) { 
         Post data = postService.selectPostDetail(post_id);
         return data;
     }
@@ -45,6 +45,31 @@ public class PostController {
     public String deletePost(@RequestBody Post post) {
         postService.deletePost(post);
         return "deletePost success.";
+    }
+
+    
+    @GetMapping("/selectComments/{post_id}")
+    public List<Comment> selectComments(@PathVariable Integer post_id) { 
+        List<Comment> comment = postService.selectComments(post_id);
+        return comment;
+    }
+
+    @PostMapping("/insertComment")
+    public String insertComment(@RequestBody Comment comment) {
+        postService.insertComment(comment);
+        return "insertComment success.";
+    }
+
+    @PostMapping("/updateComment")
+    public String updateComment(@RequestBody Comment comment) {
+        postService.updateComment(comment);
+        return "updateComment success.";
+    }
+
+    @PostMapping("/deleteComment")
+    public String deleteComment(@RequestBody Comment comment) {
+        postService.deleteComment(comment);
+        return "deleteComment success.";
     }
 
     @PostMapping("/increaseLikeCount")

@@ -13,7 +13,7 @@
             <img src="@/assets/img/logo.png" alt="Thumbnail" /> <!-- 썸네일 이미지 TODO: DB에 컬럼 추가 및 dto 수정 -->
           </div>
           <div class="post-item">{{ post.title }}</div>
-          <div class="post-item">{{ post.author }}</div>
+          <div class="post-item">{{ post.user_id }}</div>
           <div class="post-item">{{ post.created_at_formatted }}</div>
         </swiper-slide>
       </swiper>

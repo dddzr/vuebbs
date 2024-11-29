@@ -33,7 +33,7 @@
     </insert>
 
     <select id="getUserActivityRecords">
-        SELECT p.post_id, p.title, p.author, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted
+        SELECT p.post_id, p.title, p.user_id, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted
         FROM post p
         JOIN user_activity ua ON p.post_id = ua.post_id
         WHERE ua.user_id = (
@@ -44,9 +44,9 @@
     </select>
 
     <select id="getPostsByUsername">
-        SELECT p.post_id, p.title, p.author, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted
+        SELECT p.post_id, p.title, p.user_id, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted
         FROM post p
-        WHERE p.author = (
+        WHERE p.user_id = (
             SELECT u.user_id
             FROM `user` u
             WHERE u.username = #{username}
