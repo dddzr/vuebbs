@@ -20,5 +20,6 @@ public interface UserMapper {
     List<Post> getUserActivityRecords(String username, String activity_type);
     List<Post> getPostsByUsername(String username);
     int checkLikedPost(String post_id, String username);
+    int selectMyComment(Integer user_id, Integer post_id);
     
 }

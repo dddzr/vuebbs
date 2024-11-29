@@ -5,7 +5,7 @@ import lombok.Data;
 public class Post {
     private Integer post_id;
     private String title;
-    private String user_id; //user_id
+    private Integer user_id; //user_id
     private String user_nickname; //join user table
     private String content;
     private String created_at;

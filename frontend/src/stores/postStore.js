@@ -134,6 +134,16 @@ export const usePostStore = defineStore('post', {
         throw error;
       }
     },
+    async deleteComment(comment){
+      try {
+        const url = "/post/deleteComment";
+        const response = await axios.post(url, comment);
+        console.log(response);
+      } catch (error) {
+        console.error("error in deleteComment: ", error);
+        throw error;
+      }
+    },
     /* 게시글 추가 기능 */
     async increaseLikeCount(post, user_id){
       if (!post) return;

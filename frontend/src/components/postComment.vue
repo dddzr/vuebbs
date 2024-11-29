@@ -8,24 +8,34 @@
         :key="index"
         :style="{ marginLeft: comment.level * 20 + 'px' }"
       >
-        <div class="comment-contents">
+        <div class="comment-contents" :class="{'my-comment': comment.user_id == userStore.user?.user_id}">
           <div class="comment-info">            
             <p class="comment-user">{{ comment.user_nickname }}</p>
             <p class="comment-content">{{ comment.content }}</p>
           </div>
-          <label v-if="comment.level < 2" class="reply-button" @click="toggleReply(comment.comment_id)">
-            답글
-          </label>
+          <div class="comment_btn_container">
+            <label v-if="comment.user_id == userStore.user?.user_id" class="delete-button" @click="deleteComment(comment)">
+              🗑️
+            </label>
+            <label v-if="comment.level < 2" class="reply-button" @click="toggleReply(comment.comment_id)">
+              답글
+            </label>
+          </div>
         </div>
 
         <!-- 대댓글 -->
         <div v-if="replyShow[comment.comment_id]">
           <div v-for="reply in getReplies(comment.comment_id)" :key="reply.comment_id">
-            <div :style="{ marginLeft: reply.level * 20 + 'px' }" class="comment">
+            <div :style="{ marginLeft: reply.level * 20 + 'px' }" class="comment-contents" :class="{'my-comment': reply.user_id == userStore.user?.user_id}">
               <div class="comment-info">
-                <p >{{ reply.user_nickname }}</p>
-                <p >{{ reply.content }}</p>
+                <p class="comment-user">{{ reply.user_nickname }}</p>
+                <p class="comment-content">{{ reply.content }}</p>
               </div>
+              <div class="comment_btn_container">
+              <label v-if="reply.user_id == userStore.user?.user_id" class="delete-button" @click="deleteComment(comment)">
+                🗑️
+              </label>
+            </div>
             </div>
           </div>
         </div>
@@ -176,6 +186,13 @@ const toggleReply = (comment_id) => {
     newReply[comment_id] = ref({ content: '' });
   }
 };
+
+const deleteComment = async (comment) => {
+  if(confirm("댓글을 삭제하시겠습니까?")){
+    await postStore.deleteComment(comment);
+    fetchComments();
+  }        
+}
 </script>
 
 <style scoped>
@@ -191,34 +208,47 @@ const toggleReply = (comment_id) => {
 .comment {
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  margin: 5px 0px;
   border-bottom: 1px solid #ccc;
 }
+.my-comment {
+  background-color: #f0f8ff;
+}
+
 .comment-contents {
   display: flex;
   justify-content: space-between;
-  .reply-button {
-    align-self: flex-end;
-    margin-left: auto;
-    width: fit-content;
-    cursor: pointer;
-    font-size: 14px;
-    margin-inline: 5px; 
-    color: #007bff;
-  }
 }
+
+.reply-button {
+  align-self: flex-end;
+  margin-left: auto;
+  width: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-inline: 5px; 
+  color: #007bff;
+}
+
+.delete-button {
+  align-self: flex-start;
+  margin-left: auto;
+  width: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-inline: 5px; 
+}
+
 .comment-info {
   display: flex;
   flex-direction: row;
-}
-
-.comment-user {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.comment-content {
-  margin-left: 10px;
+  .comment-user {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .comment-content {
+    margin-left: 10px;
+  }
 }
 
 .comment-form,

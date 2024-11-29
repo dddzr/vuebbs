@@ -66,12 +66,20 @@
     </select>
 
     <insert id="insertUserActivity">
-        INSERT INTO user_activity (user_id, post_id, activity_type) 
-        VALUES (#{user_id}, #{post_id}, #{activity_type});
+        INSERT INTO user_activity (user_id, post_id, activity_type, activity_timestamp) 
+        VALUES (#{user_id}, #{post_id}, #{activity_type}, NOW())
+        ON DUPLICATE KEY UPDATE
+        activity_timestamp = NOW();
     </insert>
 
     <delete id="deleteUserActivity">
         DELETE FROM user_activity
         WHERE user_id = #{user_id} AND post_id = #{post_id} AND activity_type = #{activity_type};
     </delete>
+
+    <select id="selectMyComment">
+        SELECT COUNT(*)
+        FROM comment c
+        WHERE c.post_id = #{post_id} AND c.user_id = #{user_id}
+    </select>
 </mapper>

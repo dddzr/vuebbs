@@ -44,8 +44,11 @@ public class PostService {
         return postMapper.selectComments(post_id);
     }
 
+    @Transactional
     public void insertComment(Comment comment) {
         postMapper.insertComment(comment);
+        // 사용자 활동 기록 (userService 호출)
+        userService.insertUserActivity(comment.getUser_id(), comment.getPost_id(), "comment");
     }
 
     public void updateComment(Comment comment) {
@@ -54,6 +57,7 @@ public class PostService {
 
     public void deleteComment(Comment comment) {
         postMapper.deleteComment(comment);
+        userService.deleteUserActivity(comment.getUser_id(), comment.getPost_id(), "comment");
     }
 
     @Transactional

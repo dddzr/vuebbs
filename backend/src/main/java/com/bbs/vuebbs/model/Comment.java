@@ -5,7 +5,7 @@ public class Comment {
     Integer comment_id;
     Integer parent_comment_id;
     Integer post_id;
-    String user_id;
+    Integer user_id;
     String user_nickname;
     String content;
     String created_at;

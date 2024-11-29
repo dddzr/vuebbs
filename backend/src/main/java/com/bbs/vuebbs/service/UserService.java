@@ -54,6 +54,12 @@ public class UserService {
         userActivity.setPost_id(post_id);
         userActivity.setActivity_type(activity_type);
 
+        if(activity_type.equals("comment")){ //남아 있는 댓글이 있다면.
+            Integer commentCnt = userMapper.selectMyComment(user_id, post_id);
+            if(commentCnt > 0){
+                return;
+            }
+        }
         userMapper.deleteUserActivity(userActivity);
     }
 
