@@ -15,7 +15,13 @@ export const useUserStore = defineStore('user', {
       posted: [],
       comment: [],
       view: [],
-    }
+    },
+    notifications: [
+      { "id": 1, "content": "새 댓글이 달렸습니다.", "isRead": false, "createdAt": "2024-11-29T12:34:00" },
+      { "id": 2, "content": "새 좋아요가 있습니다.", "isRead": true, "createdAt": "2024-11-28T10:00:00" },
+      { "id": 3, "content": "대댓글이 달렸습니다.", "isRead": false, "createdAt": "2024-11-27T14:22:00" }
+    ]
+    
   }),
   actions: {
     async login(request) {
@@ -107,5 +113,13 @@ export const useUserStore = defineStore('user', {
         console.error('Error fetching user activity data:', error);
       }
     },
+    async fetchNotifications() {
+      try {
+        const response = await axios.get('/user/notifications', { params: { username: this.user.username } });
+        this.notifications = response.data;
+      } catch (error) {
+        console.error('알림 데이터를 가져오는 데 실패했습니다:', error);
+      }
+    }
   }
 });

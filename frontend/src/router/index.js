@@ -5,6 +5,7 @@ import CreatePostPage from '@/views/CreatePostPage.vue'
 import LoginPage from '@/views/LoginPage.vue'
 import SignUpPage from '@/views/SignUpPage.vue'
 import MyPage from '@/views/MyPage.vue'
+import NotifyPage from '@/views/NotifiyPage.vue'
 
 const routes = [
   {
@@ -44,6 +45,14 @@ const routes = [
     path: '/mypage/:username',
     name: 'MyPage',
     component: MyPage,
+    props: route => ({
+      username: route.params.username
+    }),
+  },
+  {
+    path: '/notify/:username',
+    name: 'NotifyPage',
+    component: NotifyPage,
     props: route => ({
       username: route.params.username
     }),

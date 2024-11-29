@@ -4,6 +4,12 @@
       <button @click="goHome">🏠 홈</button>
     </div>
     <div class="right-menu">
+      <button v-if="userStore.isLoggedIn" @click="goToNotifyPage" class="notification-btn">🔔
+          <!-- 읽지 않은 알림 숫자 표시 -->
+          <span v-if="unreadNotificationsCount > 0" class="notification-badge">
+          {{ unreadNotificationsCount }}
+        </span>
+      </button>
       <button v-if="userStore.isLoggedIn" @click="goToMyPage">My Page</button>
       <button v-if="userStore.isLoggedIn" @click="userStore.logout()">로그아웃</button>
       <button v-else @click="goToLogin">로그인</button>
@@ -12,7 +18,7 @@
 </template>  
   
 <script setup>
-  import { onMounted } from 'vue';
+  import { onMounted, computed } from 'vue';
   import { useRouter } from 'vue-router';
   import { useUserStore } from '@/stores/userStore';
 
@@ -22,9 +28,14 @@
   onMounted(() => {
     if (typeof window !== 'undefined' && localStorage.getItem('loginId') !== null) {
       userStore.isLoggedIn = true;
+      userStore.fetchNotifications();
     }
   })
 
+  // 읽지 않은 알림 개수 계산
+  const unreadNotificationsCount = computed(() => {
+    return userStore.notifications.filter(notification => !notification.isRead).length;
+  });
   const goHome = () => {
     router.push('/');
   };
@@ -33,9 +44,15 @@
   };
   const goToMyPage = () => {
     router.push({
-    name: "MyPage",
-    params: { username: userStore.user.username }
-  });
+      name: "MyPage",
+      params: { username: userStore.user.username }
+    });  
+  };
+  const goToNotifyPage = () => {
+    router.push({
+      name: "NotifyPage",
+      params: { username: userStore.user.username }
+    });  
   };
 </script>
   
@@ -72,8 +89,26 @@
     font-weight: 600;
   }
 
-  .right-menu button {
-    border-left: 1px solid #cccccc00;
+  .right-menu {
+    display: flex;
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-left: 1px solid #cccccc00;
+    }
+  }
+
+  .notification-badge {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
   }
 </style>
   
