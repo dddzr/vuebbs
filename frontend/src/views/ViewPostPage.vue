@@ -35,6 +35,7 @@
       </span>
     </div>
 
+    <postComment/>
   </div>
 </template>
   
@@ -50,6 +51,7 @@
   import mainNavbar from '@/components/mainNavbar.vue';
   import loadingSpinner from '@/components/loadingSpinner.vue';
   import postForm from '@/components/postForm.vue';
+  import postComment from '@/components/postComment.vue';
   import '@/assets/styles/postDetailPage.css'; 
 
   const postStore = usePostStore();
