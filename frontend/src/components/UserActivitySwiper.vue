@@ -8,7 +8,7 @@
         <button @click="viewMore">더보기</button>
       </div>
       <swiper :slides-per-view="2.5" spaceBetween="10" :loop=false style="width: 100%;">
-        <swiper-slide v-for="post in activityRecords" :key="post.id">
+        <swiper-slide v-for="post in activityRecords" :key="post.id" @click="goToViewPost(post)">
           <div class="thumbnail">
             <img src="@/assets/img/logo.png" alt="Thumbnail" /> <!-- 썸네일 이미지 TODO: DB에 컬럼 추가 및 dto 수정 -->
           </div>
@@ -23,14 +23,18 @@
    
 <script setup>
   import { onMounted, computed, defineProps, defineEmits } from "vue";
+  import { useRouter } from 'vue-router';
   import { useUIStore } from '@/stores/uiStore';
   import { useUserStore } from '@/stores/userStore';
+  import { usePostStore } from '@/stores/postStore';
   import loadingSpinner from '@/components/loadingSpinner';
   import { Swiper, SwiperSlide } from 'swiper/vue';
   import 'swiper/swiper-bundle.css';
 
   const userStore = useUserStore();
   const uiStore = useUIStore();
+  const postStore = usePostStore();
+  const router = useRouter();
 
   const props = defineProps({
     activity_type :{
@@ -69,6 +73,16 @@
   const viewMore = () => {
       emit("viewMore");
   }
+
+  const goToViewPost = (post) => {
+  postStore.setCurrentPost(post);
+  postStore.setMode("view");
+  router.push({
+    name: "ViewPostPage",
+    params: { postId: post.post_id },
+    query: { mode: "view" },
+  });
+};
 </script>
   
 <style scoped>
@@ -98,6 +112,7 @@
     border-radius: 8px;
     padding: 10px;
     height: 150px;
+    cursor: pointer;
   }
   
   .post-item {

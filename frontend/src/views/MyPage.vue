@@ -1,5 +1,5 @@
 <template>
-    <div class="mypage-container">
+    <div>
         <!-- 네비게이션 바 -->
         <mainNavbar />   
         <!-- 상단 프로필 영역 -->
@@ -7,13 +7,12 @@
         <UserProfile />
         </div>
 
-        <!-- 하단 T자 레이아웃 -->
-        <div class="bottom-section">
+        <div class="user-records-section">
             <div class="grid-layout">                
                 <!-- 내 게시글 -->
-                <!-- <div class="grid-item">
+                <div class="grid-item">
                     <UserActivitySwiper :activity_type="'posted'" @viewMore="handleViewMore('posted')"/>
-                </div> -->
+                </div>
                 <!-- 댓글 단 게시글 -->
                 <div class="grid-item">
                     <UserActivitySwiper :activity_type="'comment'" @viewMore="handleViewMore('comment')"/>
@@ -42,18 +41,12 @@
 </script>
   
 <style scoped>
-.mypage-container {
-    display: flex;
-    flex-direction: column;
-    max-height: calc(100vh - 70px); /* navbar and padding */    
-    max-width: 100vw;
-}
-  
+ 
 .profile-section {
   margin-bottom: 20px;
 }
 
-.bottom-section {
+.user-records-section {
   display: flex;
   flex-direction: column;
   gap: 20px;

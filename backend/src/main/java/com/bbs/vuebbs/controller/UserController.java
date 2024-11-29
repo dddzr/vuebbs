@@ -48,6 +48,12 @@ public class UserController {
         return data;
     }
 
+    @GetMapping("/getPostsByUsername/{username}")
+    public List<Post> getPostsByUsername(@PathVariable String username) {  
+        List<Post> data = userService.getPostsByUsername(username);
+        return data;
+    }
+
     @GetMapping("/checkLikedPost/{post_id}/{username}")
     public ResponseEntity<Map<String, Object>> checkLikedPost(@PathVariable String post_id, @PathVariable String username) {  
         Map<String, Object> response = new HashMap<>();

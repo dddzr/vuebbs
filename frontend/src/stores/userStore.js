@@ -86,7 +86,7 @@ export const useUserStore = defineStore('user', {
       let url = '';
       try {
         if(activityType == 'posted') {
-          url = '/post/getPostsByUsername/' + this.user.username;
+          url = '/user/getPostsByUsername/' + this.user.username;
         }else {
           url = '/user/getUserActivityRecords/' + this.user.username + '/' + activityType;
         }

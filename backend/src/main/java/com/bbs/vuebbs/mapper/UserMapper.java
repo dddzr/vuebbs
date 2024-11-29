@@ -18,6 +18,7 @@ public interface UserMapper {
     void insertUserActivity(User userActivity);
     void deleteUserActivity(User userActivity);
     List<Post> getUserActivityRecords(String username, String activity_type);
+    List<Post> getPostsByUsername(String username);
     int checkLikedPost(String post_id, String username);
     
 }

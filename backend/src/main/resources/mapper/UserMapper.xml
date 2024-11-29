@@ -43,6 +43,16 @@
         ) AND ua.activity_type = #{activity_type};
     </select>
 
+    <select id="getPostsByUsername">
+        SELECT p.post_id, p.title, p.author, TO_CHAR(p.created_at, 'YYYY-MM-DD') AS created_at_formatted
+        FROM post p
+        WHERE p.author = (
+            SELECT u.user_id
+            FROM `user` u
+            WHERE u.username = #{username}
+        )
+    </select>
+
     <select id="checkLikedPost">
         SELECT COUNT(*)
         FROM post p

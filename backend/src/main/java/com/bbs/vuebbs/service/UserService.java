@@ -61,6 +61,10 @@ public class UserService {
         return userMapper.getUserActivityRecords(username, activity_type);
     }
 
+    public List<Post> getPostsByUsername(String username) {
+        return userMapper.getPostsByUsername(username);
+    }
+
     public boolean checkLikedPost(String post_id, String username) {
         int count = userMapper.checkLikedPost(post_id, username);
 
