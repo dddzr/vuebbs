@@ -11,7 +11,7 @@
     border-radius: 5px;
   }
   
-  .input-container {
+  .login-info-input-container {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
@@ -19,9 +19,11 @@
       display: block;
     }
     label {
-      width: 150px;
+      flex: 1;
+      max-width: 150px;
     }
     input {
+      flex: 1.5;
       display: block;
       padding: 8px;
       width: 100%;

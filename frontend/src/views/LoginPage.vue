@@ -2,11 +2,11 @@
   <div class="login_container">
     <h2>로그인</h2>
     <form @submit.prevent="login" style="margin: 50px 0px 10px 0px">
-      <div class="input-container">
+      <div class="login-info-input-container">
         <label>아이디</label>
         <input type="text" v-model="username" required />      
       </div>
-      <div class="input-container">
+      <div class="login-info-input-container">
         <label>비밀번호</label>
         <input type="text" v-model="password" required />    
       </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="post-info">
       <form @submit.prevent="handleSubmit">
-        <!-- <div class="input-container">
+        <!-- <div class="post-info-input-container">
           <label for="category">카테고리</label>
           <input
             id="category"
@@ -11,7 +11,7 @@
             :disabled="mode === 'view'"
           />
         </div> -->
-        <div class="input-container">
+        <div class="post-info-input-container">
           <label for="title">제목</label>
           <input
             id="title"
@@ -21,7 +21,7 @@
             :disabled="postStore.mode === 'view'"
           />
         </div>
-        <div class="input-container">
+        <div class="post-info-input-container">
           <label for="author_nickname">작성자</label>
           <input
             id="author_nickname"
@@ -30,7 +30,7 @@
             :disabled=true
           />
         </div>
-        <div class="input-container" v-show="false">
+        <div class="post-info-input-container" v-show="false">
           <label for="author">작성자 아이디</label>
           <input
             id="author"
@@ -39,7 +39,7 @@
             :disabled=true
           />
         </div>
-        <div v-if="postStore.mode === 'view'" class="input-container">
+        <div v-if="postStore.mode === 'view'" class="post-info-input-container">
           <label for="created_at">작성일</label>
           <!-- 날짜는 직접 입력하지 않음.-->
           <input
@@ -49,7 +49,7 @@
             :disabled=true
           />
         </div>
-        <div class="input-container">
+        <div class="post-info-input-container">
           <textarea
             id="content"
             type="text"

@@ -3,7 +3,7 @@
     <h2>회원가입</h2>
     <form @submit.prevent="signup" style="margin: 50px 0px 10px 0px">
       <!-- 아이디 입력 -->
-      <div class="input-container">
+      <div class="login-info-input-container">
         <label>아이디</label>
         <input type="text" v-model="username" @input="resetAvailability('username')" required />
         <button type="button" @click="checkDuplication('username', username)" :disabled="userStore.isAvailable.username" class="check-btn">중복검사</button>
@@ -11,7 +11,7 @@
       <label v-show= userStore.isAvailable?.username class="available-message">사용 가능한 아이디입니다.</label>
       
       <!-- 이메일 입력 -->
-      <div class="input-container">
+      <div class="login-info-input-container">
         <label>이메일</label>
         <input type="email" v-model="email" @input="resetAvailability('email')" required />
         <button type="button" @click="checkDuplication('email', email)" :disabled="userStore.isAvailable.email" class="check-btn">중복검사</button>
@@ -19,18 +19,18 @@
       <label v-show= userStore.isAvailable?.email class="available-message">사용 가능한 이메일입니다.</label>
 
       <!-- 닉네임 입력 -->
-      <div class="input-container">
+      <div class="login-info-input-container">
         <label>닉네임</label>
         <input type="text" v-model="nickname" required />
       </div>
       
       <!-- 비밀번호 입력 -->
-      <div class="input-container">
+      <div class="login-info-input-container">
         <label>비밀번호</label>
         <input type="password" v-model="password" required />
       </div>
 
-      <div class="input-container">
+      <div class="login-info-input-container">
         <label>비밀번호 확인</label>
         <input type="password" v-model="confirmPassword" required />
       </div>
